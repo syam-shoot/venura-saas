@@ -1,0 +1,14 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="48" x="0" y="6" rx="14" fill="url(#g)"/>
+  <path d="M14 18L24 38L34 18" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10 42C10 42 16 37 24 37C32 37 38 42 38 42" stroke="white" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="24" cy="26" r="3" fill="white" opacity="0.9"/>
+  <text x="58" y="32" font-family="Inter, sans-serif" font-weight="800" font-size="26" fill="#1e293b">Venura</text>
+  <text x="58" y="48" font-family="Inter, sans-serif" font-weight="500" font-size="10" fill="#94a3b8" letter-spacing="1.5">VENUE &amp; ARENA BOOKING</text>
+  <defs>
+    <linearGradient id="g" x1="0" y1="6" x2="48" y2="54" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10b981"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+</svg>
