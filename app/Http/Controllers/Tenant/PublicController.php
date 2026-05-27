@@ -142,6 +142,12 @@ class PublicController extends Controller
         if ($booking->status !== 'approved') return back()->withErrors(['date' => 'Hanya booking yang disetujui bisa direschedule.']);
         if ($booking->date->isPast()) return back()->withErrors(['date' => 'Tidak bisa reschedule booking yang sudah lewat.']);
 
+        // Minimal 5 jam sebelum waktu bermain
+        $playTime = $booking->date->copy()->setTimeFromTimeString($booking->start_time);
+        if (now()->diffInHours($playTime, false) < 5) {
+            return back()->withErrors(['date' => 'Reschedule hanya bisa dilakukan minimal 5 jam sebelum waktu bermain.']);
+        }
+
         $validated = $request->validate([
             'date' => 'required|date|after_or_equal:today',
             'start_time' => 'required',
