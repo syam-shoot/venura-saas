@@ -41,11 +41,11 @@ export default function Bookings({ tenant, bookings }: PageProps<{ tenant: Tenan
                                         {b.payment?.status==='unpaid' && b.payment?.method !== 'cash' && <p className="text-[9px] text-orange-500 mt-1 italic">Menunggu pelanggan konfirmasi bayar</p>}
                                     </td>
                                     <td className="p-3">
-                                        <div className="flex items-center justify-center gap-1">
+                                        <div className="flex items-center justify-end gap-1 min-w-[180px]">
                                             {b.status==='pending' && <><button onClick={()=>act(b.id,'approved')} disabled={b.payment?.method !== 'cash' && b.payment?.status === 'unpaid'} className={`h-7 px-2 text-[10px] font-bold rounded-lg ${b.payment?.method !== 'cash' && b.payment?.status === 'unpaid' ? 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed' : 'bg-emerald-500 text-white'}`} title={b.payment?.method !== 'cash' && b.payment?.status === 'unpaid' ? 'Menunggu konfirmasi pembayaran' : ''}>Terima</button><button onClick={()=>act(b.id,'rejected')} className="h-7 px-2 text-[10px] font-bold bg-red-500 text-white rounded-lg">Tolak</button></>}
                                             {(b.status==='approved') && <button onClick={()=>act(b.id,'cancelled')} className="h-7 px-2 text-[10px] font-bold bg-orange-100 text-orange-600 rounded-lg">Batal</button>}
-                                            <button onClick={()=>setDetail(b)} className="h-7 px-2 text-slate-400 hover:text-slate-600"><Eye className="h-3.5 w-3.5"/></button>
-                                            <button onClick={()=>del(b.id)} className="h-7 px-2 text-red-400 hover:text-red-600"><Trash2 className="h-3.5 w-3.5"/></button>
+                                            <button onClick={()=>setDetail(b)} className="h-7 w-7 flex items-center justify-center text-slate-400 hover:text-slate-600"><Eye className="h-3.5 w-3.5"/></button>
+                                            <button onClick={()=>del(b.id)} className="h-7 w-7 flex items-center justify-center text-red-400 hover:text-red-600"><Trash2 className="h-3.5 w-3.5"/></button>
                                         </div>
                                     </td>
                                 </tr>
