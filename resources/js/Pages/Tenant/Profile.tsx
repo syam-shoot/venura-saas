@@ -16,6 +16,8 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
         description: tenant.description || '',
         rules: tenant.rules || '',
         facilities: tenant.facilities || '',
+        refund_policy: (tenant as any).refund_policy || '',
+        reschedule_policy: (tenant as any).reschedule_policy || '',
     });
 
     const [uploading, setUploading] = useState(false);
@@ -77,6 +79,16 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
                     <div>
                         <Label className="text-[11px] font-bold uppercase text-slate-400">Fasilitas</Label>
                         <textarea value={data.facilities} onChange={e=>setData('facilities',e.target.value)} rows={2} placeholder="Contoh: Parkir luas, Musholla, Kantin, Ruang ganti, Toilet, WiFi..." className="mt-1 w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none"/>
+                    </div>
+
+                    <div>
+                        <Label className="text-[11px] font-bold uppercase text-slate-400">Kebijakan Refund</Label>
+                        <textarea value={data.refund_policy} onChange={e=>setData('refund_policy',e.target.value)} rows={2} placeholder="Contoh: Refund 100% jika dibatalkan H-1. Refund 50% jika dibatalkan di hari H..." className="mt-1 w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none"/>
+                    </div>
+
+                    <div>
+                        <Label className="text-[11px] font-bold uppercase text-slate-400">Kebijakan Reschedule</Label>
+                        <textarea value={data.reschedule_policy} onChange={e=>setData('reschedule_policy',e.target.value)} rows={2} placeholder="Contoh: Reschedule gratis max H-1. Reschedule di hari H dikenakan biaya 25%..." className="mt-1 w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none"/>
                     </div>
 
                     <button type="submit" disabled={processing} className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-500/20 transition">
