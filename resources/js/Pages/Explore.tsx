@@ -2,7 +2,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { PageProps, Tenant } from '@/types';
 import { VenuraLogo } from '@/Components/VenuraLogo';
 import { DarkModeToggle } from '@/Components/DarkModeToggle';
-import { Search, MapPin, LogOut } from 'lucide-react';
+import { Search, MapPin, LogOut, X } from 'lucide-react';
 import { useState } from 'react';
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 
 export default function Explore({ venues, cities, filters }: PageProps<Props>) {
     const [search, setSearch] = useState(filters.search || '');
+    const [detailVenue, setDetailVenue] = useState<any>(null);
 
     const doSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -79,7 +80,7 @@ export default function Explore({ venues, cities, filters }: PageProps<Props>) {
                     {/* Venue Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {venues.map((venue) => (
-                            <Link key={venue.id} href={`/${venue.slug}`} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg hover:border-emerald-300 dark:hover:border-emerald-800 transition group">
+                            <div key={venue.id} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg hover:border-emerald-300 dark:hover:border-emerald-800 transition group">
                                 {(venue as any).photos?.[0] && (
                                     <img src={`/storage/${(venue as any).photos[0]}`} alt={venue.name} className="w-full h-36 object-cover"/>
                                 )}
@@ -96,15 +97,19 @@ export default function Explore({ venues, cities, filters }: PageProps<Props>) {
                                     {(venue as any).description && (
                                         <p className="text-[12px] text-slate-500 mt-2 line-clamp-2">{(venue as any).description}</p>
                                     )}
-                                    {(venue as any).facilities && (
-                                        <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-2">🏷️ {(venue as any).facilities.slice(0, 60)}{(venue as any).facilities.length > 60 ? '...' : ''}</p>
-                                    )}
                                     <div className="flex items-center gap-4 text-[12px] text-slate-400 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
                                         <span>🏟️ {venue.courts_count} lapangan</span>
-                                        {venue.phone && <span>📞 {venue.phone}</span>}
+                                    </div>
+                                    <div className="flex gap-2 mt-3">
+                                        <button onClick={() => setDetailVenue(venue)} className="flex-1 text-center py-2 text-[12px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                                            Detail
+                                        </button>
+                                        <Link href={`/${venue.slug}`} className="flex-1 text-center py-2 text-[12px] font-bold bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 shadow-sm shadow-emerald-500/20 transition">
+                                            Booking
+                                        </Link>
                                     </div>
                                 </div>
-                            </Link>
+                            </div>
                         ))}
                     </div>
 
@@ -116,6 +121,75 @@ export default function Explore({ venues, cities, filters }: PageProps<Props>) {
                         </div>
                     )}
                 </div>
+
+                {/* Detail Modal */}
+                {detailVenue && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setDetailVenue(null)}>
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                            {detailVenue.photos?.[0] && (
+                                <img src={`/storage/${detailVenue.photos[0]}`} alt={detailVenue.name} className="w-full h-48 object-cover rounded-t-2xl"/>
+                            )}
+                            <div className="p-6 space-y-4">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">{detailVenue.name}</h2>
+                                        <p className="text-sm text-slate-500 flex items-center gap-1 mt-1"><MapPin className="h-3.5 w-3.5"/> {detailVenue.city} • {detailVenue.address}</p>
+                                    </div>
+                                    <button onClick={() => setDetailVenue(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"><X className="h-5 w-5 text-slate-400"/></button>
+                                </div>
+
+                                {detailVenue.phone && <p className="text-sm text-slate-600 dark:text-slate-400">📞 {detailVenue.phone}</p>}
+
+                                {detailVenue.description && (
+                                    <div>
+                                        <h4 className="text-[11px] font-bold uppercase text-slate-400 mb-1">Deskripsi</h4>
+                                        <p className="text-sm text-slate-700 dark:text-slate-300">{detailVenue.description}</p>
+                                    </div>
+                                )}
+
+                                {detailVenue.facilities && (
+                                    <div>
+                                        <h4 className="text-[11px] font-bold uppercase text-slate-400 mb-2">Fasilitas</h4>
+                                        <div className="flex flex-wrap gap-1.5">
+                                            {detailVenue.facilities.split(', ').map((f: string) => (
+                                                <span key={f} className="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 text-[11px] font-medium rounded-lg">{f}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {detailVenue.rules && (
+                                    <div>
+                                        <h4 className="text-[11px] font-bold uppercase text-slate-400 mb-1">Aturan Venue</h4>
+                                        <p className="text-sm text-slate-700 dark:text-slate-300">{detailVenue.rules}</p>
+                                    </div>
+                                )}
+
+                                {detailVenue.refund_policy && (
+                                    <div>
+                                        <h4 className="text-[11px] font-bold uppercase text-slate-400 mb-1">Kebijakan Refund & Reschedule</h4>
+                                        <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-line">{detailVenue.refund_policy}</p>
+                                    </div>
+                                )}
+
+                                {detailVenue.photos?.length > 1 && (
+                                    <div>
+                                        <h4 className="text-[11px] font-bold uppercase text-slate-400 mb-2">Foto</h4>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {detailVenue.photos.map((p: string, i: number) => (
+                                                <img key={i} src={`/storage/${p}`} alt="" className="w-full h-20 object-cover rounded-lg"/>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                <Link href={`/${detailVenue.slug}`} className="block w-full text-center py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition text-sm">
+                                    Lihat Jadwal & Booking
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );
