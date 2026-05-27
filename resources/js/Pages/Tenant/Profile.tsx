@@ -129,8 +129,8 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
                             <p className="text-sm font-semibold text-slate-900 dark:text-white">Izinkan Reschedule</p>
                             <p className="text-[11px] text-slate-400">Pelanggan bisa reschedule 1x, minimal 5 jam sebelum bermain</p>
                         </div>
-                        <button type="button" onClick={() => setData('allow_reschedule', !data.allow_reschedule)} className={`w-11 h-6 rounded-full transition ${data.allow_reschedule ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'}`}>
-                            <span className={`block w-5 h-5 bg-white rounded-full shadow transition-transform ${data.allow_reschedule ? 'translate-x-5.5 ml-[22px]' : 'translate-x-0.5 ml-[2px]'}`}/>
+                        <button type="button" onClick={() => setData('allow_reschedule', !data.allow_reschedule)} className={`relative w-12 h-6 rounded-full transition ${data.allow_reschedule ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'}`}>
+                            <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all ${data.allow_reschedule ? 'left-6' : 'left-0.5'}`}/>
                         </button>
                     </div>
 
