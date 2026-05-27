@@ -10,6 +10,13 @@ class ExploreController extends Controller
 {
     public function index(Request $request)
     {
+        // Mitra venue tidak perlu explore
+        if ($request->user()->role === 'tenant_admin') {
+            $tenant = $request->user()->tenants()->first();
+            if ($tenant) return redirect("/{$tenant->slug}/admin");
+            return redirect('/onboarding');
+        }
+
         $query = Tenant::where('is_active', true)->withCount('courts');
 
         if ($city = $request->query('city')) {

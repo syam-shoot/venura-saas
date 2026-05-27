@@ -89,6 +89,11 @@ class PublicController extends Controller
 
     public function book(Request $request, Tenant $tenant)
     {
+        // Mitra venue tidak bisa booking
+        if ($request->user()->role === 'tenant_admin') {
+            return back()->withErrors(['start_time' => 'Akun Mitra Venue tidak bisa melakukan booking.']);
+        }
+
         $validated = $request->validate([
             'court_id' => 'required|exists:courts,id',
             'date' => 'required|date|after_or_equal:today',
