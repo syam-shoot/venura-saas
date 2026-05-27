@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Super Admin (platform owner) — MUST be before {tenant} wildcard
 Route::prefix('/super-admin')->middleware(['auth', 'super.admin'])->name('super.')->group(function () {
     Route::get('/', [SuperDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/tenants/{tenant}', [SuperDashboardController::class, 'showTenant'])->name('tenants.show');
     Route::patch('/tenants/{tenant}/toggle', [SuperDashboardController::class, 'toggleTenant'])->name('tenants.toggle');
     Route::patch('/tenants/{tenant}/verify', [SuperDashboardController::class, 'verifyTenant'])->name('tenants.verify');
     Route::post('/mitra', [SuperDashboardController::class, 'createMitra'])->name('mitra.store');

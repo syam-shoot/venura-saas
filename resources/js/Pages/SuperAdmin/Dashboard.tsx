@@ -108,6 +108,7 @@ export default function Dashboard({ stats, tenants }: PageProps<{ stats: Stats; 
                                         </td>
                                         <td className="p-3 text-center">
                                             <div className="flex items-center justify-center gap-1.5">
+                                                <Link href={`/super-admin/tenants/${t.id}`} className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition">Detail</Link>
                                                 {!t.is_verified && (
                                                     <button onClick={() => verify(t.id)} className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100 transition">Verifikasi</button>
                                                 )}

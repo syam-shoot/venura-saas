@@ -27,6 +27,20 @@ class SuperDashboardController extends Controller
         ]);
     }
 
+    public function showTenant(Tenant $tenant)
+    {
+        $owner = $tenant->users()->wherePivot('role', 'owner')->first();
+
+        return Inertia::render('SuperAdmin/TenantDetail', [
+            'tenant' => $tenant,
+            'owner' => $owner,
+            'stats' => [
+                'courts' => $tenant->courts()->count(),
+                'bookings' => $tenant->bookings()->count(),
+            ],
+        ]);
+    }
+
     public function toggleTenant(Tenant $tenant)
     {
         $tenant->is_active = !$tenant->is_active;
