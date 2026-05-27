@@ -75,13 +75,14 @@ export default function Register() {
                                 <input type="tel" value={data.phone} onChange={(e) => setData('phone', e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm" placeholder="08xxxxxxxxxx" />
                             </div>
                             <div>
-                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Password</label>
-                                <input type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm" placeholder="Min. 8 karakter" required />
+                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Kata Sandi</label>
+                                <input type="password" value={data.password} onChange={(e) => setData('password', e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm" placeholder="Buat kata sandi yang aman" required />
+                                <p className="text-[10px] text-slate-500 mt-1">Min. 8 karakter, kombinasi huruf besar, angka & simbol (!@#$)</p>
                                 {errors.password && <p className="text-red-400 text-xs mt-1.5">{errors.password}</p>}
                             </div>
                             <div>
-                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Konfirmasi Password</label>
-                                <input type="password" value={data.password_confirmation} onChange={(e) => setData('password_confirmation', e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm" placeholder="Ulangi password" required />
+                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Konfirmasi Kata Sandi</label>
+                                <input type="password" value={data.password_confirmation} onChange={(e) => setData('password_confirmation', e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm" placeholder="Ulangi kata sandi" required />
                             </div>
                             <button type="submit" disabled={processing} className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 text-sm">
                                 {processing ? 'Memproses...' : 'Daftar Sekarang'}
