@@ -78,7 +78,31 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
 
                     <div>
                         <Label className="text-[11px] font-bold uppercase text-slate-400">Fasilitas</Label>
-                        <textarea value={data.facilities} onChange={e=>setData('facilities',e.target.value)} rows={2} placeholder="Contoh: Parkir luas, Musholla, Kantin, Ruang ganti, Toilet, WiFi..." className="mt-1 w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none"/>
+                        <p className="text-[10px] text-slate-400 mb-2">Klik untuk memilih fasilitas yang tersedia</p>
+                        <div className="flex flex-wrap gap-2">
+                            {[
+                                '☕ Cafe & Resto', '🍿 Jual Makanan Ringan', '🥤 Jual Minuman',
+                                '🕌 Musholla', '🚗 Parkir Mobil', '🏍️ Parkir Motor',
+                                '👕 Ruang Ganti', '🚿 Shower', '🚻 Toilet',
+                                '🏟️ Tribun Penonton', '📶 Wi-Fi', '🔌 Charging Station',
+                                '🏧 ATM', '🛒 Mini Market', '📺 TV/Nonton Bareng',
+                                '🎵 Sound System', '💡 Lampu Malam', '🧊 AC/Kipas Angin',
+                                '🏋️ Gym Area', '🎮 Game Corner',
+                            ].map((f) => {
+                                const selected = data.facilities.includes(f);
+                                return (
+                                    <button key={f} type="button" onClick={() => {
+                                        if (selected) {
+                                            setData('facilities', data.facilities.split(', ').filter(x => x !== f).join(', '));
+                                        } else {
+                                            setData('facilities', data.facilities ? `${data.facilities}, ${f}` : f);
+                                        }
+                                    }} className={`px-3 py-1.5 rounded-lg text-[11px] font-semibold border transition ${selected ? 'bg-emerald-500 text-white border-emerald-500' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-emerald-300'}`}>
+                                        {f}
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     <div>
