@@ -17,7 +17,7 @@ class ExploreController extends Controller
             return redirect('/onboarding');
         }
 
-        $query = Tenant::where('is_active', true)->withCount('courts');
+        $query = Tenant::where('is_active', true)->where('is_verified', true)->withCount('courts');
 
         if ($city = $request->query('city')) {
             $query->where('city', 'like', "%{$city}%");

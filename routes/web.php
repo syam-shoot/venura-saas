@@ -46,6 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::prefix('/super-admin')->middleware(['auth', 'super.admin'])->name('super.')->group(function () {
     Route::get('/', [SuperDashboardController::class, 'index'])->name('dashboard');
     Route::patch('/tenants/{tenant}/toggle', [SuperDashboardController::class, 'toggleTenant'])->name('tenants.toggle');
+    Route::patch('/tenants/{tenant}/verify', [SuperDashboardController::class, 'verifyTenant'])->name('tenants.verify');
+    Route::post('/mitra', [SuperDashboardController::class, 'createMitra'])->name('mitra.store');
 });
 
 // Public venue page (anyone can view schedule, must login to book)

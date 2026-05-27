@@ -23,6 +23,14 @@ class ResolveTenant
             abort(404, 'Venue tidak ditemukan.');
         }
 
+        // Block public access to unverified venues (except for owner)
+        if (!$tenant->is_verified) {
+            $user = $request->user();
+            if (!$user || !$user->isTenantAdmin($tenant)) {
+                abort(404, 'Venue tidak ditemukan.');
+            }
+        }
+
         app()->instance('currentTenant', $tenant);
 
         // Replace route parameter with actual Tenant model for controller injection
