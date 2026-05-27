@@ -163,7 +163,7 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                             </div>
                             <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-xl text-sm">
                                 <div className="flex justify-between text-slate-500"><span>Waktu</span><span className="font-semibold text-slate-900 dark:text-white">{selected.time}-{data.end_time} ({duration}jam)</span></div>
-                                <div className="border-t border-slate-200 dark:border-slate-700 pt-1.5 mt-1.5 flex justify-between"><span className="font-bold">Total</span><span className="font-extrabold text-lg text-emerald-600">Rp {getTotalPrice().toLocaleString('id-ID')}</span></div>
+                                <div className="border-t border-slate-200 dark:border-slate-700 pt-1.5 mt-1.5 flex justify-between"><span className="font-bold text-slate-500">Total</span><span className="font-extrabold text-lg text-emerald-600">Rp {getTotalPrice().toLocaleString('id-ID')}</span></div>
                             </div>
                             {errors.start_time&&<p className="text-red-400 text-xs">{errors.start_time}</p>}
                             <button type="submit" disabled={processing} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 text-sm">{processing?'Memproses...':'Konfirmasi Booking'}</button>
