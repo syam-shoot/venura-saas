@@ -38,6 +38,7 @@ export default function Bookings({ tenant, bookings }: PageProps<{ tenant: Tenan
                                     <td className="p-3">
                                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${b.payment?.status==='verified'?'bg-emerald-100 text-emerald-600':b.payment?.status==='paid'?'bg-yellow-100 text-yellow-600':'bg-red-100 text-red-600'}`}>{b.payment?.status?.toUpperCase()||'UNPAID'}</span>
                                         {b.payment?.status==='paid' && <button onClick={()=>pay(b.id,'verified')} className="block text-[10px] text-emerald-600 font-bold mt-1 hover:underline">Verifikasi</button>}
+                                        {b.payment?.status==='unpaid' && b.payment?.method !== 'cash' && <p className="text-[9px] text-orange-500 mt-1 italic">Menunggu pelanggan konfirmasi bayar</p>}
                                     </td>
                                     <td className="p-3">
                                         <div className="flex items-center justify-center gap-1">
