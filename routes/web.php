@@ -9,6 +9,7 @@ use App\Http\Controllers\Tenant\TarifController;
 use App\Http\Controllers\Tenant\UserController;
 use App\Http\Controllers\Tenant\ProfileController as TenantProfileController;
 use App\Http\Controllers\Tenant\PublicController;
+use App\Http\Controllers\Tenant\ReportController;
 use App\Http\Controllers\SuperAdmin\SuperDashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -57,6 +58,8 @@ Route::prefix('/{tenant}')->middleware('tenant')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/book', [PublicController::class, 'book'])->name('venue.book');
         Route::patch('/book/{booking}/pay', [PublicController::class, 'markPaid'])->name('venue.pay');
+        Route::patch('/book/{booking}/reschedule', [PublicController::class, 'reschedule'])->name('venue.reschedule');
+        Route::post('/book/{booking}/review', [PublicController::class, 'review'])->name('venue.review');
     });
 
     // Tenant admin panel
@@ -78,5 +81,6 @@ Route::prefix('/{tenant}')->middleware('tenant')->group(function () {
         Route::put('/profile', [TenantProfileController::class, 'update'])->name('profile.update');
         Route::post('/profile/photos', [TenantProfileController::class, 'uploadPhotos'])->name('profile.photos');
         Route::delete('/profile/photos', [TenantProfileController::class, 'deletePhoto'])->name('profile.photos.delete');
+        Route::get('/report', [ReportController::class, 'index'])->name('report.index');
     });
 });

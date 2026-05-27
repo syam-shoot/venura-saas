@@ -6,14 +6,16 @@ import { VenuraLogo } from '@/Components/VenuraLogo';
 import { toast } from '@/Components/Toast';
 import { useState } from 'react';
 
-interface Props { tenant: Tenant; courts: Court[]; bookings: Booking[]; selectedDate: string; tarifRules: Record<string, TarifRule[]>; myBookings: Booking[]; }
+interface Props { tenant: Tenant; courts: Court[]; bookings: Booking[]; selectedDate: string; tarifRules: Record<string, TarifRule[]>; myBookings: Booking[]; reviews: { id: number; rating: number; comment: string; user: { name: string }; created_at: string }[]; }
 
-export default function Schedule({ tenant, courts, bookings, selectedDate, tarifRules, myBookings }: PageProps<Props>) {
+export default function Schedule({ tenant, courts, bookings, selectedDate, tarifRules, myBookings, reviews }: PageProps<Props>) {
     const user = usePage().props.auth?.user as any;
     const [showModal, setShowModal] = useState(false);
     const [selected, setSelected] = useState<{ court: Court; time: string; slot: string; price: number }|null>(null);
     const [duration, setDuration] = useState(1);
     const [tab, setTab] = useState<'jadwal'|'riwayat'>('jadwal');
+    const [rescheduleBooking, setRescheduleBooking] = useState<Booking|null>(null);
+    const [rescheduleData, setRescheduleData] = useState({ date: '', start_time: '', end_time: '' });
     const { data, setData, post, processing, reset, errors } = useForm({ court_id: 0, date: selectedDate, start_time: '', end_time: '', team_name: '', phone: '', notes: '', payment_method: 'transfer_bank' });
 
     const changeDate = (d: string) => router.get(`/${tenant.slug}`, { date: d }, { preserveState: true });
@@ -39,6 +41,11 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
     const getTotalPrice = () => { if(!selected) return 0; let t=0; for(let i=0;i<duration;i++) t+=getPrice(selected.court,`${String(parseInt(selected.time)+i).padStart(2,'0')}:00`); return t; };
     const submitBooking = (e: React.FormEvent) => { e.preventDefault(); post(`/${tenant.slug}/book`, { onSuccess: () => { setShowModal(false); reset(); toast('Booking berhasil!'); router.reload(); } }); };
     const markPaid = (id: number) => { router.patch(`/${tenant.slug}/book/${id}/pay`, {}, { onSuccess: () => toast('Pembayaran dikonfirmasi!') }); };
+    const openReschedule = (b: Booking) => { setRescheduleBooking(b); setRescheduleData({ date: b.date, start_time: b.start_time?.slice(0,5)||'', end_time: b.end_time?.slice(0,5)||'' }); };
+    const submitReschedule = () => { if(!rescheduleBooking) return; router.patch(`/${tenant.slug}/book/${rescheduleBooking.id}/reschedule`, rescheduleData, { onSuccess: () => { setRescheduleBooking(null); toast('Berhasil direschedule!'); } }); };
+    const [reviewBooking, setReviewBooking] = useState<Booking|null>(null);
+    const [reviewData, setReviewData] = useState({ rating: 5, comment: '' });
+    const submitReview = () => { if(!reviewBooking) return; router.post(`/${tenant.slug}/book/${reviewBooking.id}/review`, reviewData, { onSuccess: () => { setReviewBooking(null); toast('Review berhasil!'); } }); };
 
     const getSlots = (court: Court) => {
         const weekend = isWeekend(selectedDate);
@@ -132,6 +139,12 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                                                 {b.payment?.status==='unpaid' && b.status!=='cancelled' && b.status!=='rejected' && (
                                                     <button onClick={()=>markPaid(b.id)} className="text-[10px] font-bold text-emerald-600 hover:underline ml-2">Konfirmasi Sudah Bayar</button>
                                                 )}
+                                                {b.status==='approved' && new Date(b.date) >= new Date(new Date().toDateString()) && (
+                                                    <button onClick={()=>openReschedule(b)} className="text-[10px] font-bold text-blue-600 hover:underline ml-2">Reschedule</button>
+                                                )}
+                                                {b.status==='completed' && (
+                                                    <button onClick={()=>{setReviewBooking(b);setReviewData({rating:5,comment:''});}} className="text-[10px] font-bold text-purple-600 hover:underline ml-2">Beri Review</button>
+                                                )}
                                             </div>
                                         </div>
                                         {b.payment && <p className="text-[12px] font-bold text-slate-900 dark:text-white">Rp {Number(b.payment.amount).toLocaleString('id-ID')}</p>}
@@ -142,6 +155,26 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                     </div>}
                 </div>}
             </div>
+
+            {/* Reviews Section */}
+            {reviews && reviews.length > 0 && (
+                <div className="max-w-6xl mx-auto px-4 pb-5">
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                        <div className="p-5 border-b border-slate-100 dark:border-slate-800"><h3 className="font-bold text-slate-900 dark:text-white">⭐ Ulasan Pelanggan ({reviews.length})</h3></div>
+                        <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                            {reviews.map(r => (
+                                <div key={r.id} className="p-4">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="font-semibold text-sm text-slate-900 dark:text-white">{r.user.name}</span>
+                                        <span className="text-yellow-500 text-sm">{'★'.repeat(r.rating)}{'☆'.repeat(5-r.rating)}</span>
+                                    </div>
+                                    {r.comment && <p className="text-sm text-slate-600 dark:text-slate-400">{r.comment}</p>}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Booking Modal */}
             {showModal && selected && (
@@ -168,6 +201,35 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                             {errors.start_time&&<p className="text-red-400 text-xs">{errors.start_time}</p>}
                             <button type="submit" disabled={processing} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 text-sm">{processing?'Memproses...':'Konfirmasi Booking'}</button>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Reschedule Modal */}
+            {rescheduleBooking && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm p-5 space-y-4">
+                        <div className="flex justify-between items-center"><h3 className="font-bold text-lg text-slate-900 dark:text-white">Reschedule Booking</h3><button onClick={()=>setRescheduleBooking(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"><X className="h-5 w-5 text-slate-400"/></button></div>
+                        <div><label className="block text-[11px] font-bold uppercase text-slate-400 mb-1">Tanggal Baru</label><input type="date" value={rescheduleData.date} min={new Date().toISOString().split('T')[0]} onChange={e=>setRescheduleData({...rescheduleData, date: e.target.value})} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"/></div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div><label className="block text-[11px] font-bold uppercase text-slate-400 mb-1">Mulai</label><input type="time" value={rescheduleData.start_time} onChange={e=>setRescheduleData({...rescheduleData, start_time: e.target.value})} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"/></div>
+                            <div><label className="block text-[11px] font-bold uppercase text-slate-400 mb-1">Selesai</label><input type="time" value={rescheduleData.end_time} onChange={e=>setRescheduleData({...rescheduleData, end_time: e.target.value})} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"/></div>
+                        </div>
+                        <button onClick={submitReschedule} className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl text-sm">Simpan Reschedule</button>
+                    </div>
+                </div>
+            )}
+
+            {/* Review Modal */}
+            {reviewBooking && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm p-5 space-y-4">
+                        <div className="flex justify-between items-center"><h3 className="font-bold text-lg text-slate-900 dark:text-white">Beri Review</h3><button onClick={()=>setReviewBooking(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"><X className="h-5 w-5 text-slate-400"/></button></div>
+                        <div><label className="block text-[11px] font-bold uppercase text-slate-400 mb-2">Rating</label>
+                            <div className="flex gap-1">{[1,2,3,4,5].map(s=><button key={s} type="button" onClick={()=>setReviewData({...reviewData,rating:s})} className={`text-2xl ${s<=reviewData.rating?'text-yellow-400':'text-slate-300'}`}>★</button>)}</div>
+                        </div>
+                        <div><label className="block text-[11px] font-bold uppercase text-slate-400 mb-1">Komentar</label><textarea value={reviewData.comment} onChange={e=>setReviewData({...reviewData,comment:e.target.value})} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm h-24 resize-none" placeholder="Tulis pengalaman Anda..."/></div>
+                        <button onClick={submitReview} className="w-full py-3 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-xl text-sm">Kirim Review</button>
                     </div>
                 </div>
             )}

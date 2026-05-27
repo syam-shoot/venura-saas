@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Tenant;
+use App\Notifications\BookingStatusNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
@@ -30,6 +31,11 @@ class BookingController extends Controller
 
         $booking->status = $request->status;
         $booking->save();
+
+        if (in_array($request->status, ['approved', 'rejected'])) {
+            $booking->load(['court', 'tenant', 'user']);
+            $booking->user->notify(new BookingStatusNotification($booking, $request->status));
+        }
 
         if (in_array($request->status, ['cancelled', 'rejected']) && $booking->payment) {
             $booking->payment->update(['status' => 'refunded']);

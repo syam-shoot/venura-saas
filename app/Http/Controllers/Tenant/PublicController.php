@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Court;
+use App\Models\Review;
 use App\Models\Tenant;
 use App\Models\TarifRule;
 use Illuminate\Http\Request;
@@ -39,6 +40,7 @@ class PublicController extends Controller
             'selectedDate' => $date,
             'tarifRules' => $tarifRules,
             'myBookings' => $myBookings,
+            'reviews' => $tenant->reviews()->with('user')->latest()->take(20)->get(),
         ]);
     }
 
@@ -131,6 +133,50 @@ class PublicController extends Controller
     {
         if ($booking->user_id !== auth()->id()) abort(403);
         $booking->payment?->update(['status' => 'paid']);
+        return back();
+    }
+
+    public function reschedule(Request $request, Tenant $tenant, Booking $booking)
+    {
+        if ($booking->user_id !== auth()->id()) abort(403);
+        if ($booking->status !== 'approved') return back()->withErrors(['date' => 'Hanya booking yang disetujui bisa direschedule.']);
+        if ($booking->date->isPast()) return back()->withErrors(['date' => 'Tidak bisa reschedule booking yang sudah lewat.']);
+
+        $validated = $request->validate([
+            'date' => 'required|date|after_or_equal:today',
+            'start_time' => 'required',
+            'end_time' => 'required|after:start_time',
+        ]);
+
+        $overlap = Booking::where('tenant_id', $tenant->id)
+            ->where('court_id', $booking->court_id)
+            ->where('date', $validated['date'])
+            ->where('id', '!=', $booking->id)
+            ->whereIn('status', ['pending', 'approved'])
+            ->where(fn($q) => $q->where('start_time', '<', $validated['end_time'])->where('end_time', '>', $validated['start_time']))
+            ->exists();
+
+        if ($overlap) return back()->withErrors(['date' => 'Slot waktu ini sudah dipesan.']);
+
+        $booking->update($validated);
+        return back();
+    }
+
+    public function review(Request $request, Tenant $tenant, Booking $booking)
+    {
+        if ($booking->user_id !== auth()->id()) abort(403);
+        if ($booking->status !== 'completed') return back()->withErrors(['rating' => 'Hanya booking selesai yang bisa direview.']);
+
+        $validated = $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string|max:500',
+        ]);
+
+        Review::updateOrCreate(
+            ['booking_id' => $booking->id],
+            [...$validated, 'tenant_id' => $tenant->id, 'user_id' => auth()->id()]
+        );
+
         return back();
     }
 }

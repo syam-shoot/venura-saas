@@ -40,6 +40,11 @@ class Tenant extends Model
         return $this->hasMany(TarifRule::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function owner(): ?User
     {
         return $this->users()->wherePivot('role', 'owner')->first();
