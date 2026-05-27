@@ -78,28 +78,41 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
 
                     <div>
                         <Label className="text-[11px] font-bold uppercase text-slate-400">Fasilitas</Label>
-                        <p className="text-[10px] text-slate-400 mb-2">Klik untuk memilih fasilitas yang tersedia</p>
-                        <div className="flex flex-wrap gap-2">
+                        <p className="text-[10px] text-slate-400 mb-3">Klik untuk memilih fasilitas yang tersedia</p>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                             {[
-                                'Cafe & Resto', 'Jual Makanan Ringan', 'Jual Minuman',
-                                'Musholla', 'Parkir Mobil', 'Parkir Motor',
-                                'Ruang Ganti', 'Shower', 'Toilet',
-                                'Tribun Penonton', 'Wi-Fi', 'Charging Station',
-                                'ATM', 'Mini Market', 'TV/Nonton Bareng',
-                                'Sound System', 'Lampu Malam', 'AC/Kipas Angin',
-                                'Gym Area', 'Game Corner', 'Loker',
-                            ].map((f) => {
-                                const selected = data.facilities.includes(f);
+                                { name: 'Cafe & Resto', icon: 'M3 3h18v18H3V3zm3 3v4h4V6H6zm8 0v4h4V6h-4zm-8 8v4h4v-4H6zm8 0v4h4v-4h-4z' },
+                                { name: 'Jual Makanan Ringan', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm4 0h-2v-2h2v2zm-2-4H9V8h4v4z' },
+                                { name: 'Jual Minuman', icon: 'M6 2l1.5 3.5L6 9v13h12V9l-1.5-3.5L18 2H6zm3 15H7v-2h2v2zm5 0h-2v-2h2v2z' },
+                                { name: 'Musholla', icon: 'M12 3L2 12h3v8h14v-8h3L12 3zm0 3.5l5 4.5v6H7v-6l5-4.5z' },
+                                { name: 'Parkir Mobil', icon: 'M5 11l1.5-4.5h11L19 11M3 15h18v-4H3v4zm2 3h2v2H5v-2zm12 0h2v2h-2v-2z' },
+                                { name: 'Parkir Motor', icon: 'M19 7h-3l-1.5-3H9.5L8 7H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2z' },
+                                { name: 'Ruang Ganti', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z' },
+                                { name: 'Shower', icon: 'M7 2v11h3v9l7-12h-4l4-8z' },
+                                { name: 'Toilet', icon: 'M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm4 7H8v13h3v-6h2v6h3V9z' },
+                                { name: 'Tribun Penonton', icon: 'M4 18h16v2H4v-2zm0-4h4v3H4v-3zm6 0h4v3h-4v-3zm6 0h4v3h-4v-3zM2 8h20v2H2V8zm2 3h4v3H4v-3zm6 0h4v3h-4v-3zm6 0h4v3h-4v-3z' },
+                                { name: 'Wi-Fi', icon: 'M12 18c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm0-4c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2h2c0-2.21-1.79-4-4-4zm0-4c-4.42 0-8 3.58-8 8h2c0-3.31 2.69-6 6-6s6 2.69 6 6h2c0-4.42-3.58-8-8-8zm0-4C6.48 6 2 10.48 2 16h2c0-4.42 3.58-8 8-8s8 3.58 8 8h2c0-5.52-4.48-10-10-10z' },
+                                { name: 'Charging Station', icon: 'M7 2v11h3v9l7-12h-4l4-8H7z' },
+                                { name: 'ATM', icon: 'M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 10h2v2H6v-2zm0 4h8v2H6v-2zm10 0h2v2h-2v-2zm-6-4h8v2h-8v-2z' },
+                                { name: 'Mini Market', icon: 'M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 14.26l.04-.12L8.1 12h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0020 3H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 14.37 5.48 16 7 16h12v-2H7l1.1-2h7.45z' },
+                                { name: 'Sound System', icon: 'M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z' },
+                                { name: 'Lampu Malam', icon: 'M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z' },
+                                { name: 'AC/Kipas Angin', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2V7zm0 8h2v2h-2v-2z' },
+                                { name: 'Gym Area', icon: 'M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43 1.43 1.43 2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z' },
+                                { name: 'Game Corner', icon: 'M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z' },
+                                { name: 'Loker', icon: 'M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H6v-7h12v7zm0-9H6V4h12v7zm-7-1h2v2h-2V10zm0 8h2v2h-2v-2z' },
+                            ].map(({ name, icon }) => {
+                                const selected = data.facilities.includes(name);
                                 return (
-                                    <button key={f} type="button" onClick={() => {
+                                    <button key={name} type="button" onClick={() => {
                                         if (selected) {
-                                            setData('facilities', data.facilities.split(', ').filter(x => x !== f).join(', '));
+                                            setData('facilities', data.facilities.split(', ').filter(x => x !== name).join(', '));
                                         } else {
-                                            setData('facilities', data.facilities ? `${data.facilities}, ${f}` : f);
+                                            setData('facilities', data.facilities ? `${data.facilities}, ${name}` : name);
                                         }
-                                    }} className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12px] font-semibold border transition ${selected ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-300 dark:border-emerald-700' : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-slate-300'}`}>
-                                        {selected && <span className="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center"><svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg></span>}
-                                        {f}
+                                    }} className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[12px] font-medium border transition text-left ${selected ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-300 dark:border-emerald-700' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-slate-300'}`}>
+                                        <svg className={`w-5 h-5 flex-shrink-0 ${selected ? 'text-emerald-500' : 'text-slate-400'}`} fill="currentColor" viewBox="0 0 24 24"><path d={icon}/></svg>
+                                        {name}
                                     </button>
                                 );
                             })}
