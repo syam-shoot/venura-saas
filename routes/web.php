@@ -28,6 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/explore', [ExploreController::class, 'index'])->name('explore');
     Route::get('/onboarding', [TenantOnboardingController::class, 'create'])->name('onboarding');
     Route::post('/onboarding', [TenantOnboardingController::class, 'store'])->name('onboarding.store');
+    Route::put('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/password', [\App\Http\Controllers\Auth\PasswordController::class, 'update'])->name('password.update');
     Route::get('/dashboard', function () {
         $user = auth()->user();
         if ($user->isSuperAdmin()) return redirect('/super-admin');

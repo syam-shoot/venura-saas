@@ -1,13 +1,14 @@
-import { Head, useForm, router } from '@inertiajs/react';
+import { Head, useForm, router, usePage } from '@inertiajs/react';
 import TenantLayout from '@/Layouts/TenantLayout';
 import { PageProps, Tenant } from '@/types';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { toast } from '@/Components/Toast';
-import { Save, Upload, Trash2, Image } from 'lucide-react';
+import { Save, Upload, Trash2, Image, Lock } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { description?: string; rules?: string; facilities?: string; photos?: string[] } }>) {
+    const user = usePage().props.auth.user as any;
     const { data, setData, put, processing } = useForm({
         name: tenant.name,
         address: tenant.address || '',
@@ -158,7 +159,59 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
                         </div>
                     )}
                 </div>
+
+                {/* Owner Profile & Password */}
+                <OwnerSection />
             </div>
         </TenantLayout>
+    );
+}
+
+function OwnerSection() {
+    const user = usePage().props.auth.user as any;
+    const profileForm = useForm({ name: user.name, email: user.email, phone: user.phone || '' });
+    const passwordForm = useForm({ current_password: '', password: '', password_confirmation: '' });
+
+    const updateProfile = (e: React.FormEvent) => {
+        e.preventDefault();
+        profileForm.put('/profile', { onSuccess: () => toast('Profil berhasil diupdate!') });
+    };
+
+    const updatePassword = (e: React.FormEvent) => {
+        e.preventDefault();
+        passwordForm.put('/password', { onSuccess: () => { passwordForm.reset(); toast('Password berhasil diganti!'); } });
+    };
+
+    return (
+        <>
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+                <h3 className="font-bold text-slate-900 dark:text-white">Profil Akun Owner</h3>
+                <form onSubmit={updateProfile} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><Label className="text-[11px] font-bold uppercase text-slate-400">Nama</Label><Input value={profileForm.data.name} onChange={e=>profileForm.setData('name',e.target.value)} className="mt-1" required/></div>
+                        <div><Label className="text-[11px] font-bold uppercase text-slate-400">Email</Label><Input type="email" value={profileForm.data.email} onChange={e=>profileForm.setData('email',e.target.value)} className="mt-1" required/></div>
+                        <div><Label className="text-[11px] font-bold uppercase text-slate-400">Telepon</Label><Input value={profileForm.data.phone} onChange={e=>profileForm.setData('phone',e.target.value)} className="mt-1"/></div>
+                    </div>
+                    <button type="submit" disabled={profileForm.processing} className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-500/20 transition">
+                        <Save className="h-4 w-4"/> Simpan Profil
+                    </button>
+                </form>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+                <div className="flex items-center gap-2">
+                    <Lock className="h-4 w-4 text-slate-400" />
+                    <h3 className="font-bold text-slate-900 dark:text-white">Ganti Password</h3>
+                </div>
+                <form onSubmit={updatePassword} className="space-y-4">
+                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Password Saat Ini</Label><Input type="password" value={passwordForm.data.current_password} onChange={e=>passwordForm.setData('current_password',e.target.value)} className="mt-1" placeholder="Masukkan password lama" required/>{passwordForm.errors.current_password && <p className="text-red-400 text-xs mt-1">{passwordForm.errors.current_password}</p>}</div>
+                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Password Baru</Label><Input type="password" value={passwordForm.data.password} onChange={e=>passwordForm.setData('password',e.target.value)} className="mt-1" placeholder="Min. 8 karakter" required/>{passwordForm.errors.password && <p className="text-red-400 text-xs mt-1">{passwordForm.errors.password}</p>}</div>
+                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Konfirmasi Password Baru</Label><Input type="password" value={passwordForm.data.password_confirmation} onChange={e=>passwordForm.setData('password_confirmation',e.target.value)} className="mt-1" placeholder="Ulangi password baru" required/></div>
+                    <button type="submit" disabled={passwordForm.processing} className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white font-bold rounded-xl text-sm transition">
+                        <Lock className="h-4 w-4"/> Ganti Password
+                    </button>
+                </form>
+            </div>
+        </>
     );
 }
