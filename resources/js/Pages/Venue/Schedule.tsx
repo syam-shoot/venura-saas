@@ -41,6 +41,7 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
     const getTotalPrice = () => { if(!selected) return 0; let t=0; for(let i=0;i<duration;i++) t+=getPrice(selected.court,`${String(parseInt(selected.time)+i).padStart(2,'0')}:00`); return t; };
     const submitBooking = (e: React.FormEvent) => { e.preventDefault(); post(`/${tenant.slug}/book`, { onSuccess: () => { setShowModal(false); reset(); toast('Booking berhasil!'); router.reload(); } }); };
     const markPaid = (id: number) => { router.patch(`/${tenant.slug}/book/${id}/pay`, {}, { onSuccess: () => toast('Pembayaran dikonfirmasi!') }); };
+    const cancelBooking = (id: number) => { if(!confirm('Yakin batalkan booking ini?')) return; router.patch(`/${tenant.slug}/book/${id}/cancel`, {}, { onSuccess: () => toast('Booking dibatalkan.') }); };
     const openReschedule = (b: Booking) => { setRescheduleBooking(b); setRescheduleData({ date: b.date, start_time: b.start_time?.slice(0,5)||'', end_time: b.end_time?.slice(0,5)||'' }); };
     const submitReschedule = () => { if(!rescheduleBooking) return; router.patch(`/${tenant.slug}/book/${rescheduleBooking.id}/reschedule`, rescheduleData, { onSuccess: () => { setRescheduleBooking(null); toast('Berhasil direschedule!'); } }); };
     const [reviewBooking, setReviewBooking] = useState<Booking|null>(null);
@@ -138,6 +139,9 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                                                 {b.payment && <span className="text-[10px] text-slate-400 capitalize">{b.payment.method.replace(/_/g,' ')}</span>}
                                                 {b.payment?.status==='unpaid' && b.status!=='cancelled' && b.status!=='rejected' && (
                                                     <button onClick={()=>markPaid(b.id)} className="text-[10px] font-bold text-emerald-600 hover:underline ml-2">Konfirmasi Sudah Bayar</button>
+                                                )}
+                                                {b.status==='pending' && b.created_at && (new Date().getTime() - new Date(b.created_at).getTime()) < 5*60*1000 && (
+                                                    <button onClick={()=>cancelBooking(b.id)} className="text-[10px] font-bold text-red-600 hover:underline ml-2">Batalkan</button>
                                                 )}
                                                 {b.status==='approved' && new Date(b.date) >= new Date(new Date().toDateString()) && (
                                                     <button onClick={()=>openReschedule(b)} className="text-[10px] font-bold text-blue-600 hover:underline ml-2">Reschedule</button>

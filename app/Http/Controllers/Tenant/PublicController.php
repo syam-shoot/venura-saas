@@ -136,6 +136,25 @@ class PublicController extends Controller
         return back();
     }
 
+    public function cancelBooking(Tenant $tenant, Booking $booking)
+    {
+        if ($booking->user_id !== auth()->id()) abort(403);
+        if ($booking->status !== 'pending') return back()->withErrors(['error' => 'Hanya booking pending yang bisa dibatalkan.']);
+
+        // Hanya bisa batalkan dalam 5 menit setelah booking dibuat
+        if (now()->diffInMinutes($booking->created_at) > 5) {
+            return back()->withErrors(['error' => 'Pembatalan hanya bisa dilakukan dalam 5 menit setelah booking.']);
+        }
+
+        $booking->status = 'cancelled';
+        $booking->save();
+        if ($booking->payment) {
+            $booking->payment->update(['status' => 'refunded']);
+        }
+
+        return back();
+    }
+
     public function reschedule(Request $request, Tenant $tenant, Booking $booking)
     {
         if ($booking->user_id !== auth()->id()) abort(403);

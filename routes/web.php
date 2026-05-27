@@ -58,6 +58,7 @@ Route::prefix('/{tenant}')->middleware('tenant')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/book', [PublicController::class, 'book'])->name('venue.book');
         Route::patch('/book/{booking}/pay', [PublicController::class, 'markPaid'])->name('venue.pay');
+        Route::patch('/book/{booking}/cancel', [PublicController::class, 'cancelBooking'])->name('venue.cancel');
         Route::patch('/book/{booking}/reschedule', [PublicController::class, 'reschedule'])->name('venue.reschedule');
         Route::post('/book/{booking}/review', [PublicController::class, 'review'])->name('venue.review');
     });
