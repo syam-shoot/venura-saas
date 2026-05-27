@@ -92,7 +92,6 @@ export default function Explore({ venues, cities, filters }: PageProps<Props>) {
                                                 <span className="text-[12px] text-slate-500">{(venue as any).city || venue.address}</span>
                                             </div>
                                         </div>
-                                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 uppercase">{venue.plan}</span>
                                     </div>
                                     {(venue as any).description && (
                                         <p className="text-[12px] text-slate-500 mt-2 line-clamp-2">{(venue as any).description}</p>
