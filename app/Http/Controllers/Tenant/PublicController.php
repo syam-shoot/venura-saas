@@ -139,6 +139,7 @@ class PublicController extends Controller
     public function reschedule(Request $request, Tenant $tenant, Booking $booking)
     {
         if ($booking->user_id !== auth()->id()) abort(403);
+        if (!$tenant->allow_reschedule) return back()->withErrors(['date' => 'Venue ini tidak mengizinkan reschedule.']);
         if ($booking->status !== 'approved') return back()->withErrors(['date' => 'Hanya booking yang disetujui bisa direschedule.']);
         if ($booking->date->isPast()) return back()->withErrors(['date' => 'Tidak bisa reschedule booking yang sudah lewat.']);
 

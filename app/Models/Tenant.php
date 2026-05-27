@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tenant extends Model
 {
-    protected $fillable = ['name', 'slug', 'logo', 'address', 'city', 'phone', 'email', 'plan', 'is_active', 'description', 'rules', 'facilities', 'photos', 'refund_policy', 'reschedule_policy'];
+    protected $fillable = ['name', 'slug', 'logo', 'address', 'city', 'phone', 'email', 'plan', 'is_active', 'description', 'rules', 'facilities', 'photos', 'refund_policy', 'reschedule_policy', 'allow_reschedule'];
 
     protected function casts(): array
     {

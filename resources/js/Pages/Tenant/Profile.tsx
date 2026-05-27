@@ -18,6 +18,7 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
         rules: tenant.rules || '',
         facilities: tenant.facilities || '',
         refund_policy: (tenant as any).refund_policy || '',
+        allow_reschedule: (tenant as any).allow_reschedule || false,
     });
 
     const [uploading, setUploading] = useState(false);
@@ -121,6 +122,16 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
                     <div>
                         <Label className="text-[11px] font-bold uppercase text-slate-400">Kebijakan Refund & Reschedule</Label>
                         <textarea value={data.refund_policy} onChange={e=>setData('refund_policy',e.target.value)} rows={4} placeholder="Contoh:&#10;• Refund 100% jika dibatalkan H-1&#10;• Refund 50% jika dibatalkan di hari H&#10;• Reschedule gratis max H-1&#10;• Reschedule di hari H dikenakan biaya 25%&#10;• Tidak ada refund untuk no-show" className="mt-1 w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none"/>
+                    </div>
+
+                    <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                        <div>
+                            <p className="text-sm font-semibold text-slate-900 dark:text-white">Izinkan Reschedule</p>
+                            <p className="text-[11px] text-slate-400">Pelanggan bisa reschedule 1x, minimal 5 jam sebelum bermain</p>
+                        </div>
+                        <button type="button" onClick={() => setData('allow_reschedule', !data.allow_reschedule)} className={`w-11 h-6 rounded-full transition ${data.allow_reschedule ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-600'}`}>
+                            <span className={`block w-5 h-5 bg-white rounded-full shadow transition-transform ${data.allow_reschedule ? 'translate-x-5.5 ml-[22px]' : 'translate-x-0.5 ml-[2px]'}`}/>
+                        </button>
                     </div>
 
                     <button type="submit" disabled={processing} className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-500/20 transition">

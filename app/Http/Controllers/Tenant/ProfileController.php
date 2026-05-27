@@ -27,6 +27,7 @@ class ProfileController extends Controller
             'facilities' => 'nullable|string|max:500',
             'refund_policy' => 'nullable|string|max:1000',
             'reschedule_policy' => 'nullable|string|max:1000',
+            'allow_reschedule' => 'boolean',
         ]);
 
         $tenant->update($validated);
