@@ -1,0 +1,137 @@
+import { Head, Link, useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
+import { VenuraLogo } from '@/Components/VenuraLogo';
+
+export default function Register() {
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        password_confirmation: '',
+    });
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        post(route('register'), { onFinish: () => reset('password', 'password_confirmation') });
+    };
+
+    return (
+        <>
+            <Head title="Register" />
+            <div className="min-h-screen flex bg-slate-950">
+                {/* Left - Branding */}
+                <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-emerald-500 to-emerald-700 relative overflow-hidden items-center justify-center p-12">
+                    <div className="relative z-10 text-white max-w-md">
+                        <div className="flex items-center gap-3 mb-8">
+                            <VenuraLogo className="h-12 w-12" />
+                            <span className="font-extrabold text-3xl">Venura</span>
+                        </div>
+                        <h2 className="text-4xl font-extrabold leading-tight mb-4">
+                            Bergabung &<br />Mulai Booking
+                        </h2>
+                        <p className="text-emerald-100 text-lg">
+                            Daftar gratis dan nikmati kemudahan booking lapangan olahraga kapan saja, di mana saja.
+                        </p>
+                    </div>
+                    <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-white/5 rounded-full"></div>
+                    <div className="absolute -top-10 -left-10 w-60 h-60 bg-white/5 rounded-full"></div>
+                </div>
+
+                {/* Right - Form */}
+                <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+                    <div className="w-full max-w-sm">
+                        <div className="lg:hidden flex items-center gap-3 mb-8">
+                            <VenuraLogo />
+                            <span className="font-extrabold text-xl text-white">Venura</span>
+                        </div>
+
+                        <h1 className="text-2xl font-extrabold text-white mb-1">Buat Akun Baru</h1>
+                        <p className="text-slate-400 text-sm mb-8">Isi data di bawah untuk mendaftar</p>
+
+                        <form onSubmit={submit} className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Nama Lengkap</label>
+                                <input
+                                    type="text"
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm"
+                                    placeholder="Nama lengkap"
+                                    required
+                                    autoFocus
+                                />
+                                {errors.name && <p className="text-red-400 text-xs mt-1.5">{errors.name}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Email</label>
+                                <input
+                                    type="email"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm"
+                                    placeholder="nama@email.com"
+                                    required
+                                />
+                                {errors.email && <p className="text-red-400 text-xs mt-1.5">{errors.email}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Nomor Telepon</label>
+                                <input
+                                    type="tel"
+                                    value={data.phone}
+                                    onChange={(e) => setData('phone', e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm"
+                                    placeholder="08xxxxxxxxxx"
+                                />
+                                {errors.phone && <p className="text-red-400 text-xs mt-1.5">{errors.phone}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Password</label>
+                                <input
+                                    type="password"
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm"
+                                    placeholder="Min. 8 karakter"
+                                    required
+                                />
+                                {errors.password && <p className="text-red-400 text-xs mt-1.5">{errors.password}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Konfirmasi Password</label>
+                                <input
+                                    type="password"
+                                    value={data.password_confirmation}
+                                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                                    className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm"
+                                    placeholder="Ulangi password"
+                                    required
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 text-sm"
+                            >
+                                {processing ? 'Memproses...' : 'Daftar Sekarang'}
+                            </button>
+                        </form>
+
+                        <p className="text-center text-sm text-slate-500 mt-6">
+                            Sudah punya akun?{' '}
+                            <Link href={route('login')} className="text-emerald-400 font-semibold hover:underline">
+                                Masuk
+                            </Link>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+}
