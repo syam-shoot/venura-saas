@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tenant extends Model
 {
-    protected $fillable = ['name', 'slug', 'logo', 'address', 'city', 'phone', 'email', 'plan', 'is_active'];
+    protected $fillable = ['name', 'slug', 'logo', 'address', 'city', 'phone', 'email', 'plan', 'is_active', 'description', 'rules', 'facilities', 'photos'];
+
+    protected function casts(): array
+    {
+        return ['photos' => 'array', 'is_active' => 'boolean'];
+    }
 
     public function getRouteKeyName(): string
     {

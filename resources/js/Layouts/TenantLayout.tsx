@@ -1,6 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, useState } from 'react';
-import { LayoutDashboard, CalendarCheck, Layers, Clock, Users, LogOut, Menu, X, Monitor } from 'lucide-react';
+import { LayoutDashboard, CalendarCheck, Layers, Clock, Users, LogOut, Menu, X, Monitor, Building2 } from 'lucide-react';
 import { DarkModeToggle } from '@/Components/DarkModeToggle';
 import { VenuraLogo } from '@/Components/VenuraLogo';
 import { Tenant } from '@/types';
@@ -11,6 +11,7 @@ const getNavItems = (slug: string) => [
     { href: `/${slug}/admin/courts`, label: 'Kelola Lapangan', icon: Layers },
     { href: `/${slug}/admin/tarif`, label: 'Atur Tarif', icon: Clock },
     { href: `/${slug}/admin/users`, label: 'Pelanggan', icon: Users },
+    { href: `/${slug}/admin/profile`, label: 'Profil Venue', icon: Building2 },
     { href: `/${slug}/monitor`, label: 'FIDS Monitor', icon: Monitor },
 ];
 

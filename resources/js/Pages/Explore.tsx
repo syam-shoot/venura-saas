@@ -80,18 +80,27 @@ export default function Explore({ venues, cities, filters }: PageProps<Props>) {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {venues.map((venue) => (
                             <Link key={venue.id} href={`/${venue.slug}`} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg hover:border-emerald-300 dark:hover:border-emerald-800 transition group">
+                                {(venue as any).photos?.[0] && (
+                                    <img src={`/storage/${(venue as any).photos[0]}`} alt={venue.name} className="w-full h-36 object-cover"/>
+                                )}
                                 <div className="p-5">
-                                    <div className="flex items-start justify-between mb-3">
+                                    <div className="flex items-start justify-between mb-2">
                                         <div>
                                             <h3 className="font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition">{venue.name}</h3>
                                             <div className="flex items-center gap-1 mt-1">
                                                 <MapPin className="h-3 w-3 text-slate-400" />
-                                                <span className="text-[12px] text-slate-500">{venue.city || venue.address}</span>
+                                                <span className="text-[12px] text-slate-500">{(venue as any).city || venue.address}</span>
                                             </div>
                                         </div>
                                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 uppercase">{venue.plan}</span>
                                     </div>
-                                    <div className="flex items-center gap-4 text-[12px] text-slate-400">
+                                    {(venue as any).description && (
+                                        <p className="text-[12px] text-slate-500 mt-2 line-clamp-2">{(venue as any).description}</p>
+                                    )}
+                                    {(venue as any).facilities && (
+                                        <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-2">🏷️ {(venue as any).facilities.slice(0, 60)}{(venue as any).facilities.length > 60 ? '...' : ''}</p>
+                                    )}
+                                    <div className="flex items-center gap-4 text-[12px] text-slate-400 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800">
                                         <span>🏟️ {venue.courts_count} lapangan</span>
                                         {venue.phone && <span>📞 {venue.phone}</span>}
                                     </div>

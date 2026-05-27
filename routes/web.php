@@ -7,6 +7,7 @@ use App\Http\Controllers\Tenant\CourtController;
 use App\Http\Controllers\Tenant\BookingController;
 use App\Http\Controllers\Tenant\TarifController;
 use App\Http\Controllers\Tenant\UserController;
+use App\Http\Controllers\Tenant\ProfileController as TenantProfileController;
 use App\Http\Controllers\Tenant\PublicController;
 use App\Http\Controllers\SuperAdmin\SuperDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -71,5 +72,9 @@ Route::prefix('/{tenant}')->middleware('tenant')->group(function () {
         Route::post('/tarif', [TarifController::class, 'store'])->name('tarif.store');
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::patch('/users/{user}/toggle', [UserController::class, 'toggleActive'])->name('users.toggle');
+        Route::get('/profile', [TenantProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [TenantProfileController::class, 'update'])->name('profile.update');
+        Route::post('/profile/photos', [TenantProfileController::class, 'uploadPhotos'])->name('profile.photos');
+        Route::delete('/profile/photos', [TenantProfileController::class, 'deletePhoto'])->name('profile.photos.delete');
     });
 });
