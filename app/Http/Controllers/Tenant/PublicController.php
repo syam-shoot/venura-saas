@@ -148,6 +148,11 @@ class PublicController extends Controller
             return back()->withErrors(['date' => 'Reschedule hanya bisa dilakukan minimal 5 jam sebelum waktu bermain.']);
         }
 
+        // Hanya 1x reschedule
+        if ($booking->rescheduled) {
+            return back()->withErrors(['date' => 'Booking ini sudah pernah di-reschedule. Maksimal 1x reschedule.']);
+        }
+
         $validated = $request->validate([
             'date' => 'required|date|after_or_equal:today',
             'start_time' => 'required',
@@ -164,7 +169,7 @@ class PublicController extends Controller
 
         if ($overlap) return back()->withErrors(['date' => 'Slot waktu ini sudah dipesan.']);
 
-        $booking->update($validated);
+        $booking->update([...$validated, 'rescheduled' => true]);
         return back();
     }
 
