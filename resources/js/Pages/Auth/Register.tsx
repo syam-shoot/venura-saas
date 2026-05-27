@@ -47,13 +47,13 @@ export default function Register() {
                         <div className="grid grid-cols-2 gap-3 mb-6">
                             <button type="button" onClick={() => setData('register_as', 'customer')}
                                 className={`p-3 rounded-xl border text-center transition ${data.register_as === 'customer' ? 'border-emerald-500 bg-emerald-500/10' : 'border-slate-700 hover:border-slate-600'}`}>
-                                <span className="text-2xl block mb-1">🏟️</span>
+                                <svg className={`w-7 h-7 mx-auto mb-1 ${data.register_as === 'customer' ? 'text-emerald-400' : 'text-slate-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                                 <p className={`text-[12px] font-bold ${data.register_as === 'customer' ? 'text-emerald-400' : 'text-slate-400'}`}>Pelanggan</p>
                                 <p className="text-[10px] text-slate-500">Saya ingin booking</p>
                             </button>
                             <button type="button" onClick={() => setData('register_as', 'venue_owner')}
                                 className={`p-3 rounded-xl border text-center transition ${data.register_as === 'venue_owner' ? 'border-emerald-500 bg-emerald-500/10' : 'border-slate-700 hover:border-slate-600'}`}>
-                                <span className="text-2xl block mb-1">🏢</span>
+                                <svg className={`w-7 h-7 mx-auto mb-1 ${data.register_as === 'venue_owner' ? 'text-emerald-400' : 'text-slate-500'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                                 <p className={`text-[12px] font-bold ${data.register_as === 'venue_owner' ? 'text-emerald-400' : 'text-slate-400'}`}>Pemilik Venue</p>
                                 <p className="text-[10px] text-slate-500">Saya punya lapangan</p>
                             </button>
