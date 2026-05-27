@@ -15,12 +15,16 @@ class ReportController extends Controller
         $from = $request->query('from', now()->startOfMonth()->toDateString());
         $to = $request->query('to', now()->toDateString());
 
-        $bookings = $tenant->bookings()
-            ->whereIn('status', ['approved', 'completed'])
-            ->whereBetween('date', [$from, $to])
-            ->join('payments', 'bookings.id', '=', 'payments.booking_id')
-            ->whereIn('payments.status', ['paid', 'verified'])
-            ->select(DB::raw('bookings.date, COUNT(*) as count, SUM(payments.amount) as revenue'))
+        $bookings = DB::table('bookings')
+            ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
+            ->where('bookings.tenant_id', $tenant->id)
+            ->whereIn('bookings.status', ['approved', 'completed'])
+            ->whereBetween('bookings.date', [$from, $to])
+            ->select(
+                'bookings.date',
+                DB::raw('COUNT(DISTINCT bookings.id) as count'),
+                DB::raw('COALESCE(SUM(payments.amount), 0) as revenue')
+            )
             ->groupBy('bookings.date')
             ->orderBy('bookings.date')
             ->get();
