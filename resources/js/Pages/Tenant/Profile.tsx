@@ -97,7 +97,7 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
                                         } else {
                                             setData('facilities', data.facilities ? `${data.facilities}, ${f}` : f);
                                         }
-                                    }} className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12px] font-semibold border transition ${selected ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border-emerald-500 shadow-sm shadow-emerald-500/10' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-emerald-300 dark:hover:border-emerald-700'}`}>
+                                    }} className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12px] font-semibold border transition ${selected ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 border-emerald-300 dark:border-emerald-700' : 'bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:border-slate-300'}`}>
                                         {selected && <span className="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center"><svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg></span>}
                                         {f}
                                     </button>
