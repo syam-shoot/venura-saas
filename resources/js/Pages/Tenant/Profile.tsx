@@ -5,6 +5,7 @@ import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { toast } from '@/Components/Toast';
 import { Save, Upload, Trash2, Image, Lock } from 'lucide-react';
+import { PasswordInput } from '@/Components/PasswordInput';
 import { useState } from 'react';
 
 export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { description?: string; rules?: string; facilities?: string; photos?: string[] } }>) {
@@ -215,9 +216,9 @@ function OwnerSection() {
                     <h3 className="font-bold text-slate-900 dark:text-white">Ganti Password</h3>
                 </div>
                 <form onSubmit={updatePassword} className="space-y-4">
-                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Password Saat Ini</Label><Input type="password" value={passwordForm.data.current_password} onChange={e=>passwordForm.setData('current_password',e.target.value)} className="mt-1" placeholder="Masukkan password lama" required/>{passwordForm.errors.current_password && <p className="text-red-400 text-xs mt-1">{passwordForm.errors.current_password}</p>}</div>
-                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Password Baru</Label><Input type="password" value={passwordForm.data.password} onChange={e=>passwordForm.setData('password',e.target.value)} className="mt-1" placeholder="Min. 8 karakter" required/>{passwordForm.errors.password && <p className="text-red-400 text-xs mt-1">{passwordForm.errors.password}</p>}</div>
-                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Konfirmasi Password Baru</Label><Input type="password" value={passwordForm.data.password_confirmation} onChange={e=>passwordForm.setData('password_confirmation',e.target.value)} className="mt-1" placeholder="Ulangi password baru" required/></div>
+                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Password Saat Ini</Label><PasswordInput value={passwordForm.data.current_password} onChange={e=>passwordForm.setData('current_password',e.target.value)} className="mt-1" placeholder="Masukkan password lama" required/>{passwordForm.errors.current_password && <p className="text-red-400 text-xs mt-1">{passwordForm.errors.current_password}</p>}</div>
+                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Password Baru</Label><PasswordInput value={passwordForm.data.password} onChange={e=>passwordForm.setData('password',e.target.value)} className="mt-1" placeholder="Min. 8 karakter" required/>{passwordForm.errors.password && <p className="text-red-400 text-xs mt-1">{passwordForm.errors.password}</p>}</div>
+                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Konfirmasi Password Baru</Label><PasswordInput value={passwordForm.data.password_confirmation} onChange={e=>passwordForm.setData('password_confirmation',e.target.value)} className="mt-1" placeholder="Ulangi password baru" required/></div>
                     <button type="submit" disabled={passwordForm.processing} className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white font-bold rounded-xl text-sm transition">
                         <Lock className="h-4 w-4"/> Ganti Password
                     </button>

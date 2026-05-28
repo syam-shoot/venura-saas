@@ -1,3 +1,4 @@
+import { PasswordInput } from "@/Components/PasswordInput";
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import { VenuraLogo } from '@/Components/VenuraLogo';
@@ -70,8 +71,7 @@ export default function Login({ status, canResetPassword }: { status?: string; c
 
                             <div>
                                 <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Password</label>
-                                <input
-                                    type="password"
+                                <PasswordInput
                                     value={data.password}
                                     onChange={(e) => setData('password', e.target.value)}
                                     className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm"
