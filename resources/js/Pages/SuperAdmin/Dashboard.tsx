@@ -40,9 +40,14 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                 <div className="max-w-6xl mx-auto p-6 space-y-6">
                     <div className="flex justify-between items-center">
                         <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">Platform Overview</h2>
-                        <button onClick={() => setShowAddMitra(true)} className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-500/20 transition">
-                            <Plus className="h-4 w-4" /> Tambah Mitra
-                        </button>
+                        <div className="flex items-center gap-2">
+                            <Link href="/super-admin/users" className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white font-bold rounded-xl text-sm shadow-md transition">
+                                <Users className="h-4 w-4" /> Kelola User
+                            </Link>
+                            <button onClick={() => setShowAddMitra(true)} className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-500/20 transition">
+                                <Plus className="h-4 w-4" /> Tambah Mitra
+                            </button>
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-4 md:grid-cols-8 gap-2">

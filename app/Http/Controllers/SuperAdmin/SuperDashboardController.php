@@ -82,6 +82,48 @@ class SuperDashboardController extends Controller
         return back();
     }
 
+    public function users()
+    {
+        $users = User::with('tenants')->latest()->get()->map(fn ($u) => [
+            'id' => $u->id,
+            'name' => $u->name,
+            'email' => $u->email,
+            'phone' => $u->phone,
+            'role' => $u->role,
+            'is_active' => $u->is_active,
+            'email_verified_at' => $u->email_verified_at,
+            'created_at' => $u->created_at,
+            'tenant_name' => $u->tenants->first()?->name,
+        ]);
+
+        return Inertia::render('SuperAdmin/Users', ['users' => $users]);
+    }
+
+    public function toggleUser(User $user)
+    {
+        $user->is_active = !$user->is_active;
+        $user->save();
+        return back();
+    }
+
+    public function deleteUser(User $user)
+    {
+        $ownedTenants = $user->tenants()->wherePivot('role', 'owner')->get();
+        $user->tenants()->detach();
+        foreach ($ownedTenants as $tenant) {
+            $tenant->delete();
+        }
+        $user->delete();
+        return back();
+    }
+
+    public function verifyUserEmail(User $user)
+    {
+        $user->email_verified_at = now();
+        $user->save();
+        return back();
+    }
+
     public function createMitra(Request $request)
     {
         $request->validate([
