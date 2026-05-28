@@ -50,7 +50,7 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3">
                         <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
                             <Building2 className="h-4 w-4 text-emerald-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total Venue</p>
@@ -141,7 +141,7 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                                             </div>
                                         </td>
                                         <td className="p-3 text-center">
-                                            <div className="flex items-center justify-center gap-1.5">
+                                            <div className="flex items-center justify-end gap-1.5 min-w-[200px]">
                                                 <Link href={`/super-admin/tenants/${t.slug}`} className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition">Detail</Link>
                                                 {!t.is_verified && (
                                                     <button onClick={() => verify(t.id)} className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100 transition">Verifikasi</button>
