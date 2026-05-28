@@ -4,9 +4,9 @@ import { VenuraLogo } from '@/Components/VenuraLogo';
 import { ArrowLeft, ShieldCheck, MapPin, Phone, Mail, Building2, Image } from 'lucide-react';
 import { toast } from '@/Components/Toast';
 
-interface Props { tenant: Tenant & { description?: string; rules?: string; facilities?: string; photos?: string[]; refund_policy?: string; city?: string; is_verified: boolean }; owner: User | null; stats: { courts: number; bookings: number }; monthlyRevenue: { month: string; count: number; revenue: number }[]; }
+interface Props { tenant: Tenant & { description?: string; rules?: string; facilities?: string; photos?: string[]; refund_policy?: string; city?: string; is_verified: boolean }; owner: User | null; stats: { courts: number; bookings: number }; monthlyRevenue: { month: string; count: number; revenue: number }[]; popularCourts: { name: string; type: string; total: number }[]; }
 
-export default function TenantDetail({ tenant, owner, stats, monthlyRevenue }: PageProps<Props>) {
+export default function TenantDetail({ tenant, owner, stats, monthlyRevenue, popularCourts }: PageProps<Props>) {
     const verify = () => router.patch(`/super-admin/tenants/${tenant.id}/verify`, {}, { onSuccess: () => toast('Venue berhasil diverifikasi!') });
 
     return (
@@ -95,6 +95,27 @@ export default function TenantDetail({ tenant, owner, stats, monthlyRevenue }: P
                                             <p className="text-[11px] text-slate-400">{m.count} booking</p>
                                         </div>
                                         <p className="font-bold text-emerald-600">Rp {Number(m.revenue).toLocaleString('id-ID')}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Popular Courts */}
+                    {popularCourts.length > 0 && (
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                            <h3 className="font-bold text-slate-900 dark:text-white mb-3">Lapangan Paling Banyak di-Booking</h3>
+                            <div className="space-y-2">
+                                {popularCourts.map((c, i) => (
+                                    <div key={c.name} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                                        <div className="flex items-center gap-3">
+                                            <span className="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 text-[11px] font-bold flex items-center justify-center">{i+1}</span>
+                                            <div>
+                                                <p className="text-sm font-semibold text-slate-900 dark:text-white">{c.name}</p>
+                                                <p className="text-[11px] text-slate-400">{c.type}</p>
+                                            </div>
+                                        </div>
+                                        <span className="text-[11px] font-bold px-2 py-1 bg-emerald-100 dark:bg-emerald-900/20 text-emerald-600 rounded-lg">{c.total} booking</span>
                                     </div>
                                 ))}
                             </div>

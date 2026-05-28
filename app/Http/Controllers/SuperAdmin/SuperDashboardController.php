@@ -63,6 +63,14 @@ class SuperDashboardController extends Controller
                 'bookings' => $tenant->bookings()->count(),
             ],
             'monthlyRevenue' => $monthlyRevenue,
+            'popularCourts' => DB::table('bookings')
+                ->join('courts', 'bookings.court_id', '=', 'courts.id')
+                ->where('bookings.tenant_id', $tenant->id)
+                ->select('courts.name', 'courts.type', DB::raw('COUNT(*) as total'))
+                ->groupBy('courts.id', 'courts.name', 'courts.type')
+                ->orderByDesc('total')
+                ->limit(5)
+                ->get(),
         ]);
     }
 
