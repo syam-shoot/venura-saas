@@ -16,7 +16,7 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
     const toggle = (slug: string) => router.patch(`/super-admin/tenants/${slug}/toggle`);
     const verify = (slug: string) => router.patch(`/super-admin/tenants/${slug}/verify`, {}, { onSuccess: () => toast('Venue berhasil diverifikasi!') });
 
-    const { data, setData, post, processing, reset, errors } = useForm({ name: '', email: '', phone: '', venue_name: '', city: '', address: '' });
+    const { data, setData, post, processing, reset, errors } = useForm({ name: '', email: '', phone: '', password: '', venue_name: '', city: '', address: '' });
     const submitMitra = (e: React.FormEvent) => { e.preventDefault(); post('/super-admin/mitra', { onSuccess: () => { reset(); setShowAddMitra(false); toast('Mitra berhasil ditambahkan!'); } }); };
 
     return (
@@ -170,10 +170,11 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                                 <div><Label className="text-[11px] font-bold uppercase text-slate-400">Nama Pemilik</Label><Input value={data.name} onChange={e=>setData('name',e.target.value)} className="mt-1" placeholder="Nama lengkap" required/>{errors.name&&<p className="text-red-400 text-xs mt-1">{errors.name}</p>}</div>
                                 <div><Label className="text-[11px] font-bold uppercase text-slate-400">Email</Label><Input type="email" value={data.email} onChange={e=>setData('email',e.target.value)} className="mt-1" placeholder="email@domain.com" required/>{errors.email&&<p className="text-red-400 text-xs mt-1">{errors.email}</p>}</div>
                                 <div><Label className="text-[11px] font-bold uppercase text-slate-400">Telepon</Label><Input value={data.phone} onChange={e=>setData('phone',e.target.value)} className="mt-1" placeholder="08xxx" required/></div>
+                                <div><Label className="text-[11px] font-bold uppercase text-slate-400">Kata Sandi</Label><Input type="password" value={data.password} onChange={e=>setData('password',e.target.value)} className="mt-1" placeholder="Min. 8 karakter" required/>{errors.password&&<p className="text-red-400 text-xs mt-1">{errors.password}</p>}</div>
                                 <div><Label className="text-[11px] font-bold uppercase text-slate-400">Nama Venue</Label><Input value={data.venue_name} onChange={e=>setData('venue_name',e.target.value)} className="mt-1" placeholder="Green Futsal Arena" required/></div>
                                 <div><Label className="text-[11px] font-bold uppercase text-slate-400">Kota</Label><Input value={data.city} onChange={e=>setData('city',e.target.value)} className="mt-1" placeholder="Makassar" required/></div>
                                 <div><Label className="text-[11px] font-bold uppercase text-slate-400">Alamat</Label><Input value={data.address} onChange={e=>setData('address',e.target.value)} className="mt-1" placeholder="Jl. ..." required/></div>
-                                <p className="text-[10px] text-slate-400">Password default: <strong>password123</strong> (mitra bisa ganti nanti)</p>
+                                
                                 <button type="submit" disabled={processing} className="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md shadow-emerald-500/20 transition text-sm">
                                     {processing ? 'Membuat...' : 'Tambah Mitra'}
                                 </button>

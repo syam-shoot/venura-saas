@@ -142,6 +142,7 @@ class SuperDashboardController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|max:20',
+            'password' => 'required|string|min:8',
             'venue_name' => 'required|string|max:255',
             'city' => 'required|string|max:100',
             'address' => 'required|string|max:255',
@@ -152,7 +153,7 @@ class SuperDashboardController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'password' => Hash::make('password123'),
+            'password' => Hash::make($request->password),
         ]);
         $user->role = 'tenant_admin';
         $user->email_verified_at = now();
