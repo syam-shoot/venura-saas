@@ -81,7 +81,7 @@ export default function Users({ users }: { users: UserRow[] }) {
                                                 <button onClick={() => toggle(u.id)} className={`text-[11px] font-bold px-2 py-1 rounded-lg transition ${u.is_active !== false ? 'bg-red-50 dark:bg-red-900/20 text-red-600 hover:bg-red-100' : 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100'}`}>
                                                     {u.is_active !== false ? 'Suspend' : 'Aktifkan'}
                                                 </button>
-                                                {!u.email_verified_at && (
+                                                {!u.email_verified_at && u.role === 'tenant_admin' && (
                                                     <button onClick={() => verifyEmail(u.id)} className="text-[11px] font-bold px-2 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100 transition">Verify</button>
                                                 )}
                                                 <button onClick={() => deleteUser(u.id)} className="text-[11px] font-bold px-2 py-1 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 hover:bg-red-100 transition">Hapus</button>
