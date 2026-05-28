@@ -3,40 +3,40 @@ import { VenuraLogo } from '@/Components/VenuraLogo';
 import { useState } from 'react';
 
 const provinces: Record<string, string[]> = {
-    'Aceh': ['Banda Aceh', 'Lhokseumawe', 'Langsa', 'Sabang'],
-    'Sumatera Utara': ['Medan', 'Binjai', 'Pematang Siantar', 'Tebing Tinggi'],
-    'Sumatera Barat': ['Padang', 'Bukittinggi', 'Payakumbuh', 'Solok'],
-    'Riau': ['Pekanbaru', 'Dumai'],
-    'Kepulauan Riau': ['Batam', 'Tanjung Pinang'],
-    'Jambi': ['Jambi', 'Sungai Penuh'],
-    'Sumatera Selatan': ['Palembang', 'Prabumulih', 'Lubuklinggau'],
-    'Bengkulu': ['Bengkulu'],
-    'Lampung': ['Bandar Lampung', 'Metro'],
-    'Bangka Belitung': ['Pangkal Pinang'],
+    'Aceh': ['Banda Aceh', 'Lhokseumawe', 'Langsa', 'Kab. Aceh Besar', 'Kab. Aceh Utara'],
+    'Sumatera Utara': ['Medan', 'Binjai', 'Pematang Siantar', 'Tebing Tinggi', 'Kab. Deli Serdang', 'Kab. Langkat'],
+    'Sumatera Barat': ['Padang', 'Bukittinggi', 'Payakumbuh', 'Kab. Agam', 'Kab. Pesisir Selatan'],
+    'Riau': ['Pekanbaru', 'Dumai', 'Kab. Kampar', 'Kab. Siak'],
+    'Kepulauan Riau': ['Batam', 'Tanjung Pinang', 'Kab. Bintan', 'Kab. Karimun'],
+    'Jambi': ['Jambi', 'Sungai Penuh', 'Kab. Muaro Jambi'],
+    'Sumatera Selatan': ['Palembang', 'Prabumulih', 'Lubuklinggau', 'Kab. Ogan Ilir', 'Kab. Banyuasin'],
+    'Bengkulu': ['Bengkulu', 'Kab. Rejang Lebong'],
+    'Lampung': ['Bandar Lampung', 'Metro', 'Kab. Lampung Selatan', 'Kab. Lampung Tengah'],
+    'Bangka Belitung': ['Pangkal Pinang', 'Kab. Bangka', 'Kab. Belitung'],
     'DKI Jakarta': ['Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur'],
-    'Jawa Barat': ['Bandung', 'Bekasi', 'Bogor', 'Depok', 'Cimahi', 'Tasikmalaya', 'Cirebon', 'Sukabumi'],
-    'Banten': ['Tangerang', 'Tangerang Selatan', 'Serang', 'Cilegon'],
-    'Jawa Tengah': ['Semarang', 'Solo', 'Salatiga', 'Magelang', 'Pekalongan', 'Tegal'],
-    'DI Yogyakarta': ['Yogyakarta', 'Sleman', 'Bantul'],
-    'Jawa Timur': ['Surabaya', 'Malang', 'Kediri', 'Madiun', 'Mojokerto', 'Pasuruan', 'Blitar'],
-    'Bali': ['Denpasar', 'Badung', 'Gianyar'],
-    'NTB': ['Mataram', 'Bima'],
-    'NTT': ['Kupang'],
-    'Kalimantan Barat': ['Pontianak', 'Singkawang'],
-    'Kalimantan Tengah': ['Palangkaraya'],
-    'Kalimantan Selatan': ['Banjarmasin', 'Banjarbaru'],
-    'Kalimantan Timur': ['Samarinda', 'Balikpapan', 'Bontang'],
-    'Kalimantan Utara': ['Tarakan'],
-    'Sulawesi Utara': ['Manado', 'Bitung', 'Tomohon'],
-    'Sulawesi Tengah': ['Palu'],
-    'Sulawesi Selatan': ['Makassar', 'Parepare', 'Palopo'],
-    'Sulawesi Tenggara': ['Kendari'],
-    'Gorontalo': ['Gorontalo'],
-    'Sulawesi Barat': ['Mamuju'],
-    'Maluku': ['Ambon'],
-    'Maluku Utara': ['Ternate'],
-    'Papua': ['Jayapura'],
-    'Papua Barat': ['Manokwari', 'Sorong'],
+    'Jawa Barat': ['Bandung', 'Bekasi', 'Bogor', 'Depok', 'Cimahi', 'Tasikmalaya', 'Cirebon', 'Sukabumi', 'Kab. Bandung', 'Kab. Bogor', 'Kab. Bekasi', 'Kab. Karawang', 'Kab. Subang', 'Kab. Garut'],
+    'Banten': ['Tangerang', 'Tangerang Selatan', 'Serang', 'Cilegon', 'Kab. Tangerang', 'Kab. Lebak', 'Kab. Pandeglang'],
+    'Jawa Tengah': ['Semarang', 'Solo', 'Salatiga', 'Magelang', 'Pekalongan', 'Tegal', 'Kab. Semarang', 'Kab. Klaten', 'Kab. Kudus', 'Kab. Jepara', 'Kab. Banyumas'],
+    'DI Yogyakarta': ['Yogyakarta', 'Kab. Sleman', 'Kab. Bantul', 'Kab. Gunung Kidul', 'Kab. Kulon Progo'],
+    'Jawa Timur': ['Surabaya', 'Malang', 'Kediri', 'Madiun', 'Mojokerto', 'Pasuruan', 'Blitar', 'Kab. Sidoarjo', 'Kab. Gresik', 'Kab. Malang', 'Kab. Jember', 'Kab. Banyuwangi'],
+    'Bali': ['Denpasar', 'Kab. Badung', 'Kab. Gianyar', 'Kab. Tabanan', 'Kab. Buleleng'],
+    'NTB': ['Mataram', 'Bima', 'Kab. Lombok Barat', 'Kab. Lombok Timur'],
+    'NTT': ['Kupang', 'Kab. Kupang', 'Kab. Manggarai'],
+    'Kalimantan Barat': ['Pontianak', 'Singkawang', 'Kab. Kubu Raya', 'Kab. Ketapang'],
+    'Kalimantan Tengah': ['Palangkaraya', 'Kab. Kotawaringin Timur'],
+    'Kalimantan Selatan': ['Banjarmasin', 'Banjarbaru', 'Kab. Banjar', 'Kab. Tanah Laut'],
+    'Kalimantan Timur': ['Samarinda', 'Balikpapan', 'Bontang', 'Kab. Kutai Kartanegara'],
+    'Kalimantan Utara': ['Tarakan', 'Kab. Bulungan'],
+    'Sulawesi Utara': ['Manado', 'Bitung', 'Tomohon', 'Kab. Minahasa'],
+    'Sulawesi Tengah': ['Palu', 'Kab. Donggala', 'Kab. Parigi Moutong'],
+    'Sulawesi Selatan': ['Makassar', 'Parepare', 'Palopo', 'Kab. Gowa', 'Kab. Maros', 'Kab. Bone', 'Kab. Wajo'],
+    'Sulawesi Tenggara': ['Kendari', 'Kab. Konawe'],
+    'Gorontalo': ['Gorontalo', 'Kab. Gorontalo'],
+    'Sulawesi Barat': ['Mamuju', 'Kab. Polewali Mandar'],
+    'Maluku': ['Ambon', 'Kab. Maluku Tengah'],
+    'Maluku Utara': ['Ternate', 'Kab. Halmahera Utara'],
+    'Papua': ['Jayapura', 'Kab. Jayapura', 'Kab. Merauke'],
+    'Papua Barat': ['Manokwari', 'Sorong', 'Kab. Sorong'],
 };
 
 export default function Onboarding() {
@@ -81,9 +81,9 @@ export default function Onboarding() {
                             </div>
 
                             <div>
-                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Kota</label>
+                                <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Kota / Kabupaten</label>
                                 <select value={data.city} onChange={(e) => setData('city', e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm" required disabled={!province}>
-                                    <option value="">{province ? 'Pilih Kota' : 'Pilih provinsi dulu'}</option>
+                                    <option value="">{province ? 'Pilih Kota / Kabupaten' : 'Pilih provinsi dulu'}</option>
                                     {cities.map(c => <option key={c} value={c}>{c}</option>)}
                                 </select>
                                 {errors.city && <p className="text-red-400 text-xs mt-1">{errors.city}</p>}
