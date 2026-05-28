@@ -58,7 +58,7 @@ Route::prefix('/{tenant}')->middleware('tenant')->group(function () {
     Route::get('/api/schedule', [PublicController::class, 'apiSchedule'])->middleware('throttle:60,1');
 
     // Booking (requires login)
-    Route::middleware(['auth', 'verified'])->group(function () {
+    Route::middleware(['auth', 'verified', 'throttle:10,1'])->group(function () {
         Route::post('/book', [PublicController::class, 'book'])->name('venue.book');
         Route::patch('/book/{booking}/pay', [PublicController::class, 'markPaid'])->name('venue.pay');
         Route::patch('/book/{booking}/cancel', [PublicController::class, 'cancelBooking'])->name('venue.cancel');

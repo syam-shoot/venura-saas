@@ -22,6 +22,8 @@ class BookingController extends Controller
 
     public function updateStatus(Request $request, Tenant $tenant, Booking $booking)
     {
+        if ($booking->tenant_id !== $tenant->id) abort(403);
+
         $request->validate(['status' => 'required|in:approved,rejected,completed,cancelled']);
 
         Log::info('Tenant booking status change', [
@@ -46,6 +48,8 @@ class BookingController extends Controller
 
     public function updatePayment(Request $request, Tenant $tenant, Booking $booking)
     {
+        if ($booking->tenant_id !== $tenant->id) abort(403);
+
         $request->validate(['status' => 'required|in:verified,refunded']);
         $booking->payment?->update(['status' => $request->status]);
         return back();
@@ -53,6 +57,8 @@ class BookingController extends Controller
 
     public function destroy(Tenant $tenant, Booking $booking)
     {
+        if ($booking->tenant_id !== $tenant->id) abort(403);
+
         $booking->payment?->delete();
         $booking->delete();
         return back();

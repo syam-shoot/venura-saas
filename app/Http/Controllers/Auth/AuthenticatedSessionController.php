@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -33,6 +34,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        Log::info('User logged in', ['user_id' => $request->user()->id, 'email' => $request->user()->email, 'ip' => $request->ip()]);
+
         // Force redirect based on role, ignore intended URL
         $user = $request->user();
         if ($user->isSuperAdmin()) {
@@ -56,6 +59,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        Log::info('User logged out', ['user_id' => $request->user()?->id, 'ip' => $request->ip()]);
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

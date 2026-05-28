@@ -9,12 +9,14 @@ use App\Models\Review;
 use App\Models\Tenant;
 use App\Models\TarifRule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class PublicController extends Controller
 {
     public function schedule(Request $request, Tenant $tenant)
     {
+        $request->validate(['date' => 'nullable|date_format:Y-m-d']);
         $date = $request->query('date', now()->toDateString());
         $courts = $tenant->courts()->where('is_active', true)->get();
         $bookings = $tenant->bookings()
@@ -101,9 +103,13 @@ class PublicController extends Controller
             'end_time' => 'required|after:start_time',
             'team_name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
-            'notes' => 'nullable|string',
+            'notes' => 'nullable|string|max:500',
             'payment_method' => 'nullable|in:transfer_bank,e_wallet,qris,cash,dp',
         ]);
+
+        // Verify court belongs to this tenant
+        $court = Court::where('id', $validated['court_id'])->where('tenant_id', $tenant->id)->first();
+        if (!$court) abort(403);
 
         // Limit pending bookings
         $pending = $request->user()->bookings()->where('tenant_id', $tenant->id)->where('status', 'pending')->count();
@@ -128,7 +134,8 @@ class PublicController extends Controller
 
         $booking = Booking::create([...$validated, 'tenant_id' => $tenant->id, 'user_id' => $request->user()->id]);
 
-        $court = Court::find($validated['court_id']);
+        Log::info('Booking created', ['booking_id' => $booking->id, 'user_id' => $request->user()->id, 'tenant_id' => $tenant->id]);
+
         $booking->payment()->create(['method' => $paymentMethod, 'amount' => $court->price_per_hour, 'status' => 'unpaid']);
 
         return back();
@@ -136,6 +143,7 @@ class PublicController extends Controller
 
     public function markPaid(Request $request, Tenant $tenant, Booking $booking)
     {
+        if ($booking->tenant_id !== $tenant->id) abort(403);
         if ($booking->user_id !== auth()->id()) abort(403);
         $booking->payment?->update(['status' => 'paid']);
         return back();
@@ -143,6 +151,7 @@ class PublicController extends Controller
 
     public function cancelBooking(Tenant $tenant, Booking $booking)
     {
+        if ($booking->tenant_id !== $tenant->id) abort(403);
         if ($booking->user_id !== auth()->id()) abort(403);
         if ($booking->status !== 'pending') return back()->withErrors(['error' => 'Hanya booking pending yang bisa dibatalkan.']);
 
@@ -162,6 +171,7 @@ class PublicController extends Controller
 
     public function reschedule(Request $request, Tenant $tenant, Booking $booking)
     {
+        if ($booking->tenant_id !== $tenant->id) abort(403);
         if ($booking->user_id !== auth()->id()) abort(403);
         if (!$tenant->allow_reschedule) return back()->withErrors(['date' => 'Venue ini tidak mengizinkan reschedule.']);
         if ($booking->status !== 'approved') return back()->withErrors(['date' => 'Hanya booking yang disetujui bisa direschedule.']);
@@ -200,6 +210,7 @@ class PublicController extends Controller
 
     public function review(Request $request, Tenant $tenant, Booking $booking)
     {
+        if ($booking->tenant_id !== $tenant->id) abort(403);
         if ($booking->user_id !== auth()->id()) abort(403);
         if ($booking->status !== 'completed') return back()->withErrors(['rating' => 'Hanya booking selesai yang bisa direview.']);
 

@@ -12,6 +12,11 @@ class ReportController extends Controller
 {
     public function index(Request $request, Tenant $tenant)
     {
+        $request->validate([
+            'from' => 'nullable|date_format:Y-m-d',
+            'to' => 'nullable|date_format:Y-m-d',
+        ]);
+
         $from = $request->query('from', now()->startOfMonth()->toDateString());
         $to = $request->query('to', now()->toDateString());
 

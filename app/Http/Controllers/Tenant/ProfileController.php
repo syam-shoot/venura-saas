@@ -38,7 +38,7 @@ class ProfileController extends Controller
     public function uploadPhotos(Request $request, Tenant $tenant)
     {
         $request->validate([
-            'photos.*' => 'required|image|max:1024', // max 1MB per foto
+            'photos.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $existing = $tenant->photos ?? [];

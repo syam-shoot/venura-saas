@@ -42,6 +42,8 @@ class CourtController extends Controller
 
     public function update(Request $request, Tenant $tenant, Court $court)
     {
+        if ($court->tenant_id !== $tenant->id) abort(403);
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:50',
@@ -57,6 +59,8 @@ class CourtController extends Controller
 
     public function destroy(Tenant $tenant, Court $court)
     {
+        if ($court->tenant_id !== $tenant->id) abort(403);
+
         $court->delete();
         return back();
     }
