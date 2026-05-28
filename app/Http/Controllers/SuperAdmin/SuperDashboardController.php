@@ -23,6 +23,10 @@ class SuperDashboardController extends Controller
                 'total_users' => User::count(),
                 'total_bookings' => Booking::count(),
             ],
+            'courtsByType' => \App\Models\Court::select('type', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+                ->groupBy('type')
+                ->orderByDesc('total')
+                ->get(),
             'tenants' => Tenant::withCount('bookings')->latest()->get(),
         ]);
     }
