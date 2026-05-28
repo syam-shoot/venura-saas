@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 interface Stats { total_tenants: number; active_tenants: number; pending_tenants: number; total_users: number; total_bookings: number; total_courts: number; }
 
-export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ stats: Stats; tenants: (Tenant & { is_verified: boolean })[]; courtsByType: { type: string; total: number }[] }>) {
+export default function Dashboard({ stats, tenants, courtsByType, venueRevenue }: PageProps<{ stats: Stats; tenants: (Tenant & { is_verified: boolean })[]; courtsByType: { type: string; total: number }[]; venueRevenue: { name: string; slug: string; bookings: number; revenue: number }[] }>) {
     const [showAddMitra, setShowAddMitra] = useState(false);
     const toggle = (id: number) => router.patch(`/super-admin/tenants/${id}/toggle`);
     const verify = (id: number) => router.patch(`/super-admin/tenants/${id}/verify`, {}, { onSuccess: () => toast('Venue berhasil diverifikasi!') });
@@ -90,6 +90,32 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                    )}
+
+                    {/* Venue Revenue This Month */}
+                    {venueRevenue.length > 0 && (
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                            <div className="p-5 border-b border-slate-100 dark:border-slate-800">
+                                <h3 className="font-bold text-slate-900 dark:text-white">Pendapatan Venue Bulan Ini</h3>
+                                <p className="text-[11px] text-slate-400">{new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}</p>
+                            </div>
+                            <table className="w-full text-sm">
+                                <thead><tr className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700">
+                                    <th className="px-5 py-3 text-[11px] font-bold text-slate-400 uppercase text-left">Venue</th>
+                                    <th className="px-5 py-3 text-[11px] font-bold text-slate-400 uppercase text-left">Booking</th>
+                                    <th className="px-5 py-3 text-[11px] font-bold text-slate-400 uppercase text-left">Pendapatan</th>
+                                </tr></thead>
+                                <tbody>
+                                    {venueRevenue.map(v => (
+                                        <tr key={v.slug} className="border-b border-slate-50 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                            <td className="px-5 py-3 font-medium text-slate-900 dark:text-white">{v.name}</td>
+                                            <td className="px-5 py-3 text-slate-600 dark:text-slate-300">{v.bookings}</td>
+                                            <td className="px-5 py-3 font-semibold text-emerald-600">Rp {Number(v.revenue).toLocaleString('id-ID')}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     )}
 

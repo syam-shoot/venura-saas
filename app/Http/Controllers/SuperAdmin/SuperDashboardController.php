@@ -28,6 +28,15 @@ class SuperDashboardController extends Controller
                 ->groupBy('type')
                 ->orderByDesc('total')
                 ->get(),
+            'venueRevenue' => DB::table('bookings')
+                ->join('tenants', 'bookings.tenant_id', '=', 'tenants.id')
+                ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
+                ->whereIn('bookings.status', ['approved', 'completed'])
+                ->where('bookings.date', '>=', now()->startOfMonth()->toDateString())
+                ->select('tenants.name', 'tenants.slug', DB::raw('COUNT(DISTINCT bookings.id) as bookings'), DB::raw('COALESCE(SUM(payments.amount), 0) as revenue'))
+                ->groupBy('tenants.id', 'tenants.name', 'tenants.slug')
+                ->orderByDesc('revenue')
+                ->get(),
             'tenants' => Tenant::withCount('bookings')->latest()->get(),
         ]);
     }
