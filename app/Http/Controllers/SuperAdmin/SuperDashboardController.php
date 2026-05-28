@@ -84,7 +84,7 @@ class SuperDashboardController extends Controller
 
     public function users()
     {
-        $users = User::with('tenants')->latest()->get()->map(fn ($u) => [
+        $users = User::with('tenants')->where('role', 'tenant_admin')->latest()->get()->map(fn ($u) => [
             'id' => $u->id,
             'name' => $u->name,
             'email' => $u->email,
