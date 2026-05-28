@@ -9,7 +9,7 @@ import { Label } from '@/Components/ui/label';
 import { toast } from '@/Components/Toast';
 import { useState } from 'react';
 
-interface Stats { total_tenants: number; active_tenants: number; pending_tenants: number; total_users: number; total_bookings: number; total_courts: number; }
+interface Stats { total_tenants: number; active_tenants: number; pending_tenants: number; total_users: number; unverified_users: number; total_bookings: number; total_courts: number; }
 
 export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ stats: Stats; tenants: (Tenant & { is_verified: boolean })[]; courtsByType: { type: string; total: number }[] }>) {
     const [showAddMitra, setShowAddMitra] = useState(false);
@@ -66,6 +66,13 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total User</p>
                             <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{stats.total_users}</p>
                         </div>
+                        {stats.unverified_users > 0 && (
+                            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-orange-200 dark:border-orange-800">
+                                <Users className="h-5 w-5 text-orange-500 mb-2" />
+                                <p className="text-[11px] font-bold text-orange-500 uppercase">Belum Verifikasi Email</p>
+                                <p className="text-3xl font-extrabold text-orange-500">{stats.unverified_users}</p>
+                            </div>
+                        )}
                         <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
                             <CalendarDays className="h-5 w-5 text-orange-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total Booking</p>

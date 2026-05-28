@@ -22,6 +22,7 @@ class SuperDashboardController extends Controller
                 'active_tenants' => Tenant::where('is_active', true)->where('is_verified', true)->count(),
                 'pending_tenants' => Tenant::where('is_verified', false)->count(),
                 'total_users' => User::count(),
+                'unverified_users' => User::whereNull('email_verified_at')->count(),
                 'total_bookings' => Booking::count(),
                 'total_courts' => \App\Models\Court::count(),
             ],
