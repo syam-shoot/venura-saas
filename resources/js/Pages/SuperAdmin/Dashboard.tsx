@@ -45,7 +45,7 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
                         <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
                             <Building2 className="h-5 w-5 text-emerald-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total Venue</p>
