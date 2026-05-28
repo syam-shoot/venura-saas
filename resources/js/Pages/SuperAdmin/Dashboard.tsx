@@ -45,43 +45,43 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <Building2 className="h-5 w-5 text-emerald-500 mb-2" />
+                    <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+                        <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <Building2 className="h-4 w-4 text-emerald-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total Venue</p>
-                            <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{stats.total_tenants}</p>
+                            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{stats.total_tenants}</p>
                         </div>
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <ShieldCheck className="h-5 w-5 text-blue-500 mb-2" />
+                        <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <ShieldCheck className="h-4 w-4 text-blue-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Terverifikasi</p>
-                            <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{stats.active_tenants}</p>
+                            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{stats.active_tenants}</p>
                         </div>
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-yellow-200 dark:border-yellow-800">
-                            <Clock className="h-5 w-5 text-yellow-500 mb-2" />
+                        <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-yellow-200 dark:border-yellow-800">
+                            <Clock className="h-4 w-4 text-yellow-500 mb-2" />
                             <p className="text-[11px] font-bold text-yellow-600 uppercase">Menunggu Verifikasi</p>
-                            <p className="text-3xl font-extrabold text-yellow-600">{stats.pending_tenants}</p>
+                            <p className="text-2xl font-extrabold text-yellow-600">{stats.pending_tenants}</p>
                         </div>
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <Users className="h-5 w-5 text-purple-500 mb-2" />
+                        <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <Users className="h-4 w-4 text-purple-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total User</p>
-                            <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{stats.total_users}</p>
+                            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{stats.total_users}</p>
                         </div>
                         {stats.unverified_users > 0 && (
-                            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-orange-200 dark:border-orange-800">
-                                <Users className="h-5 w-5 text-orange-500 mb-2" />
+                            <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-orange-200 dark:border-orange-800">
+                                <Users className="h-4 w-4 text-orange-500 mb-2" />
                                 <p className="text-[11px] font-bold text-orange-500 uppercase">Belum Verifikasi Email</p>
-                                <p className="text-3xl font-extrabold text-orange-500">{stats.unverified_users}</p>
+                                <p className="text-2xl font-extrabold text-orange-500">{stats.unverified_users}</p>
                             </div>
                         )}
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <CalendarDays className="h-5 w-5 text-orange-500 mb-2" />
+                        <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <CalendarDays className="h-4 w-4 text-orange-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total Booking</p>
-                            <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{stats.total_bookings}</p>
+                            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{stats.total_bookings}</p>
                         </div>
-                        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <Building2 className="h-5 w-5 text-cyan-500 mb-2" />
+                        <div className="bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <Building2 className="h-4 w-4 text-cyan-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total Lapangan</p>
-                            <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{stats.total_courts}</p>
+                            <p className="text-2xl font-extrabold text-slate-900 dark:text-white">{stats.total_courts}</p>
                         </div>
                     </div>
 
