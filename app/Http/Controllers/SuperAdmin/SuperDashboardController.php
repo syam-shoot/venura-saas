@@ -45,6 +45,16 @@ class SuperDashboardController extends Controller
     {
         $owner = $tenant->users()->wherePivot('role', 'owner')->first();
 
+        $monthlyRevenue = DB::table('bookings')
+            ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
+            ->where('bookings.tenant_id', $tenant->id)
+            ->whereIn('bookings.status', ['approved', 'completed'])
+            ->where('bookings.date', '>=', now()->subMonths(6)->startOfMonth()->toDateString())
+            ->select(DB::raw('DATE_FORMAT(bookings.date, "%Y-%m") as month'), DB::raw('COUNT(DISTINCT bookings.id) as count'), DB::raw('COALESCE(SUM(payments.amount), 0) as revenue'))
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get();
+
         return Inertia::render('SuperAdmin/TenantDetail', [
             'tenant' => $tenant,
             'owner' => $owner,
@@ -52,6 +62,7 @@ class SuperDashboardController extends Controller
                 'courts' => $tenant->courts()->count(),
                 'bookings' => $tenant->bookings()->count(),
             ],
+            'monthlyRevenue' => $monthlyRevenue,
         ]);
     }
 
