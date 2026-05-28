@@ -13,8 +13,8 @@ interface Stats { total_tenants: number; active_tenants: number; pending_tenants
 
 export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ stats: Stats; tenants: (Tenant & { is_verified: boolean })[]; courtsByType: { type: string; total: number }[] }>) {
     const [showAddMitra, setShowAddMitra] = useState(false);
-    const toggle = (id: number) => router.patch(`/super-admin/tenants/${id}/toggle`);
-    const verify = (id: number) => router.patch(`/super-admin/tenants/${id}/verify`, {}, { onSuccess: () => toast('Venue berhasil diverifikasi!') });
+    const toggle = (slug: string) => router.patch(`/super-admin/tenants/${slug}/toggle`);
+    const verify = (slug: string) => router.patch(`/super-admin/tenants/${slug}/verify`, {}, { onSuccess: () => toast('Venue berhasil diverifikasi!') });
 
     const { data, setData, post, processing, reset, errors } = useForm({ name: '', email: '', phone: '', venue_name: '', city: '', address: '' });
     const submitMitra = (e: React.FormEvent) => { e.preventDefault(); post('/super-admin/mitra', { onSuccess: () => { reset(); setShowAddMitra(false); toast('Mitra berhasil ditambahkan!'); } }); };
@@ -144,9 +144,9 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                                             <div className="flex items-center justify-end gap-1.5 min-w-[200px]">
                                                 <Link href={`/super-admin/tenants/${t.slug}`} className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition">Detail</Link>
                                                 {!t.is_verified && (
-                                                    <button onClick={() => verify(t.id)} className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100 transition">Verifikasi</button>
+                                                    <button onClick={() => verify(t.slug)} className="text-[11px] font-bold px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100 transition">Verifikasi</button>
                                                 )}
-                                                <button onClick={() => toggle(t.id)} className={`text-[11px] font-bold px-3 py-1.5 rounded-lg transition ${t.is_active ? 'bg-red-50 dark:bg-red-900/20 text-red-600 hover:bg-red-100' : 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100'}`}>
+                                                <button onClick={() => toggle(t.slug)} className={`text-[11px] font-bold px-3 py-1.5 rounded-lg transition ${t.is_active ? 'bg-red-50 dark:bg-red-900/20 text-red-600 hover:bg-red-100' : 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100'}`}>
                                                     {t.is_active ? 'Suspend' : 'Aktifkan'}
                                                 </button>
                                             </div>
