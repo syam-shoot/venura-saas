@@ -82,9 +82,13 @@ class SuperDashboardController extends Controller
 
         // Also verify owner's email if not yet verified
         $owner = $tenant->users()->wherePivot('role', 'owner')->first();
-        if ($owner && !$owner->email_verified_at) {
-            $owner->email_verified_at = now();
-            $owner->save();
+        if ($owner) {
+            if (!$owner->email_verified_at) {
+                $owner->email_verified_at = now();
+                $owner->save();
+            }
+            // Send notification email
+            $owner->notify(new \App\Notifications\TenantVerifiedNotification($tenant));
         }
 
         return back();
