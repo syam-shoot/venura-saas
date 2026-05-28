@@ -77,7 +77,7 @@ export default function Users({ users }: { users: UserRow[] }) {
                                         </td>
                                         <td className="p-3 text-slate-500 text-[11px]">{new Date(u.created_at).toLocaleDateString('id-ID')}</td>
                                         <td className="p-3 text-center">
-                                            <div className="flex items-center justify-center gap-1.5 flex-wrap">
+                                            <div className="flex items-center justify-end gap-1.5 min-w-[180px]">
                                                 <button onClick={() => toggle(u.id)} className={`text-[11px] font-bold px-2 py-1 rounded-lg transition ${u.is_active !== false ? 'bg-red-50 dark:bg-red-900/20 text-red-600 hover:bg-red-100' : 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100'}`}>
                                                     {u.is_active !== false ? 'Suspend' : 'Aktifkan'}
                                                 </button>
