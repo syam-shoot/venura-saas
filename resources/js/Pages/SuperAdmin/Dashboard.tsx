@@ -9,7 +9,7 @@ import { Label } from '@/Components/ui/label';
 import { toast } from '@/Components/Toast';
 import { useState } from 'react';
 
-interface Stats { total_tenants: number; active_tenants: number; pending_tenants: number; total_users: number; total_bookings: number; }
+interface Stats { total_tenants: number; active_tenants: number; pending_tenants: number; total_users: number; total_bookings: number; total_courts: number; }
 
 export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ stats: Stats; tenants: (Tenant & { is_verified: boolean })[]; courtsByType: { type: string; total: number }[] }>) {
     const [showAddMitra, setShowAddMitra] = useState(false);
@@ -70,6 +70,11 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                             <CalendarDays className="h-5 w-5 text-orange-500 mb-2" />
                             <p className="text-[11px] font-bold text-slate-400 uppercase">Total Booking</p>
                             <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{stats.total_bookings}</p>
+                        </div>
+                        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+                            <Building2 className="h-5 w-5 text-cyan-500 mb-2" />
+                            <p className="text-[11px] font-bold text-slate-400 uppercase">Total Lapangan</p>
+                            <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{stats.total_courts}</p>
                         </div>
                     </div>
 

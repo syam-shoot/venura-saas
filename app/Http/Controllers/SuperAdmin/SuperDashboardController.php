@@ -22,6 +22,7 @@ class SuperDashboardController extends Controller
                 'pending_tenants' => Tenant::where('is_verified', false)->count(),
                 'total_users' => User::count(),
                 'total_bookings' => Booking::count(),
+                'total_courts' => \App\Models\Court::count(),
             ],
             'courtsByType' => \App\Models\Court::select('type', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
                 ->groupBy('type')
