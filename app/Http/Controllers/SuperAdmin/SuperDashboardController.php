@@ -79,6 +79,14 @@ class SuperDashboardController extends Controller
         $tenant->is_verified = true;
         $tenant->is_active = true;
         $tenant->save();
+
+        // Also verify owner's email if not yet verified
+        $owner = $tenant->users()->wherePivot('role', 'owner')->first();
+        if ($owner && !$owner->email_verified_at) {
+            $owner->email_verified_at = now();
+            $owner->save();
+        }
+
         return back();
     }
 
