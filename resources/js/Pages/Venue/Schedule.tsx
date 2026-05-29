@@ -13,7 +13,7 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
     const [showModal, setShowModal] = useState(false);
     const [selected, setSelected] = useState<{ court: Court; time: string; slot: string; price: number }|null>(null);
     const [duration, setDuration] = useState(1);
-    const [tab, setTab] = useState<'jadwal'|'riwayat'>('jadwal');
+    const [tab, setTab] = useState<'jadwal'|'riwayat'|'profil'>('jadwal');
     const [rescheduleBooking, setRescheduleBooking] = useState<Booking|null>(null);
     const [rescheduleData, setRescheduleData] = useState({ date: '', start_time: '', end_time: '' });
     const { data, setData, post, processing, reset, errors } = useForm({ court_id: 0, date: selectedDate, start_time: '', end_time: '', team_name: '', phone: '', notes: '', payment_method: 'transfer_bank' });
@@ -89,6 +89,7 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                 {user && <div className="max-w-6xl mx-auto px-4 flex gap-1">
                     <button onClick={()=>setTab('jadwal')} className={`px-5 py-2.5 text-[13px] font-semibold border-b-2 transition ${tab==='jadwal'?'border-emerald-500 text-emerald-600':'border-transparent text-slate-400'}`}>🏟️ Jadwal</button>
                     <button onClick={()=>setTab('riwayat')} className={`px-5 py-2.5 text-[13px] font-semibold border-b-2 transition ${tab==='riwayat'?'border-emerald-500 text-emerald-600':'border-transparent text-slate-400'}`}>📋 Riwayat ({myBookings.length})</button>
+                    <button onClick={()=>setTab('profil')} className={`px-5 py-2.5 text-[13px] font-semibold border-b-2 transition ${tab==='profil'?'border-emerald-500 text-emerald-600':'border-transparent text-slate-400'}`}>👤 Profil</button>
                 </div>}
             </header>
 
@@ -179,6 +180,27 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                     </div>
                 </div>
             )}
+
+                {/* Profil Tab */}
+                {tab==='profil' && user && (
+                    <div className="max-w-md">
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                            <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center gap-4">
+                                <div className="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold">{user.name?.charAt(0).toUpperCase()}</div>
+                                <div>
+                                    <h3 className="font-bold text-lg text-slate-900 dark:text-white">{user.name}</h3>
+                                    <p className="text-sm text-slate-400">{user.email}</p>
+                                </div>
+                            </div>
+                            <div className="p-6 space-y-3">
+                                <div><p className="text-[11px] font-bold text-slate-400 uppercase">Nama</p><p className="text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 px-4 py-2.5 rounded-xl mt-1">{user.name}</p></div>
+                                <div><p className="text-[11px] font-bold text-slate-400 uppercase">Email</p><p className="text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 px-4 py-2.5 rounded-xl mt-1">{user.email}</p></div>
+                                <div><p className="text-[11px] font-bold text-slate-400 uppercase">Telepon</p><p className="text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 px-4 py-2.5 rounded-xl mt-1">{user.phone || '-'}</p></div>
+                                <div><p className="text-[11px] font-bold text-slate-400 uppercase">Total Booking</p><p className="text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 px-4 py-2.5 rounded-xl mt-1">{myBookings.length} booking</p></div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
             {/* Booking Modal */}
             {showModal && selected && (
