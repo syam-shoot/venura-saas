@@ -59,11 +59,11 @@ export default function Bookings({ tenant, bookings }: PageProps<{ tenant: Tenan
                 <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 w-full max-w-sm p-6" onClick={e=>e.stopPropagation()}>
                     <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-4">{detail.team_name}</h3>
                     <div className="space-y-2 text-sm">
-                        <p><span className="text-slate-400">Pemesan:</span> {detail.user?.name}</p>
-                        <p><span className="text-slate-400">Kontak:</span> {detail.phone}</p>
-                        <p><span className="text-slate-400">Lapangan:</span> {detail.court?.name}</p>
-                        <p><span className="text-slate-400">Jadwal:</span> {detail.date} {detail.start_time?.slice(0,5)}-{detail.end_time?.slice(0,5)}</p>
-                        <p><span className="text-slate-400">Catatan:</span> {detail.notes||'-'}</p>
+                        <p><span className="text-slate-400">Pemesan:</span> <span className="text-slate-900 dark:text-white">{detail.user?.name}</span></p>
+                        <p><span className="text-slate-400">Kontak:</span> <span className="text-slate-900 dark:text-white">{detail.phone}</span></p>
+                        <p><span className="text-slate-400">Lapangan:</span> <span className="text-slate-900 dark:text-white">{detail.court?.name}</span></p>
+                        <p><span className="text-slate-400">Jadwal:</span> <span className="text-slate-900 dark:text-white">{detail.date} {detail.start_time?.slice(0,5)}-{detail.end_time?.slice(0,5)}</span></p>
+                        <p><span className="text-slate-400">Catatan:</span> <span className="text-slate-900 dark:text-white">{detail.notes||'-'}</span></p>
                     </div>
                 </div>
             </div>}
