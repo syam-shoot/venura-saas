@@ -73,7 +73,7 @@ export default function Register() {
                             </div>
                             <div>
                                 <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Nomor Telepon</label>
-                                <input type="tel" value={data.phone} onChange={(e) => setData('phone', e.target.value)} className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm" placeholder="08xxxxxxxxxx" />
+                                <input type="tel" value={data.phone} onChange={(e) => setData('phone', e.target.value.replace(/[^0-9]/g, ""))} className="w-full px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition text-sm" placeholder="08xxxxxxxxxx" />
                             </div>
                             <div>
                                 <label className="block text-xs font-bold uppercase text-slate-400 mb-2">Kata Sandi</label>
