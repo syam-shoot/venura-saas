@@ -71,6 +71,12 @@ class SuperDashboardController extends Controller
     {
         $tenant->is_active = !$tenant->is_active;
         $tenant->save();
+
+        // Cancel pending bookings when suspended
+        if (!$tenant->is_active) {
+            $tenant->bookings()->where('status', 'pending')->update(['status' => 'cancelled']);
+        }
+
         return back();
     }
 
