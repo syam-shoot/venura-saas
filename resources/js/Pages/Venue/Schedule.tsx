@@ -183,7 +183,7 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
 
                 {/* Profil Tab */}
                 {tab==='profil' && user && (
-                    <div className="max-w-md">
+                    <div className="max-w-md space-y-4">
                         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
                             <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center gap-4">
                                 <div className="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold">{user.name?.charAt(0).toUpperCase()}</div>
@@ -193,12 +193,10 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                                 </div>
                             </div>
                             <div className="p-6 space-y-3">
-                                <div><p className="text-[11px] font-bold text-slate-400 uppercase">Nama</p><p className="text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 px-4 py-2.5 rounded-xl mt-1">{user.name}</p></div>
-                                <div><p className="text-[11px] font-bold text-slate-400 uppercase">Email</p><p className="text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 px-4 py-2.5 rounded-xl mt-1">{user.email}</p></div>
-                                <div><p className="text-[11px] font-bold text-slate-400 uppercase">Telepon</p><p className="text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 px-4 py-2.5 rounded-xl mt-1">{user.phone || '-'}</p></div>
                                 <div><p className="text-[11px] font-bold text-slate-400 uppercase">Total Booking</p><p className="text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 px-4 py-2.5 rounded-xl mt-1">{myBookings.length} booking</p></div>
                             </div>
                         </div>
+                        <CustomerProfileForm user={user} tenant={tenant} />
                     </div>
                 )}
 
@@ -261,5 +259,42 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                 </div>
             )}
         </div></>
+    );
+}
+
+function CustomerProfileForm({ user, tenant }: { user: any; tenant: any }) {
+    const profileForm = useForm({ name: user.name, phone: user.phone || '' });
+    const pwForm = useForm({ current_password: '', password: '', password_confirmation: '' });
+
+    const updateProfile = (e: React.FormEvent) => {
+        e.preventDefault();
+        profileForm.put('/profile', { onSuccess: () => toast('Profil berhasil diupdate!') });
+    };
+
+    const updatePassword = (e: React.FormEvent) => {
+        e.preventDefault();
+        pwForm.put('/password', { onSuccess: () => { pwForm.reset(); toast('Kata sandi berhasil diganti!'); } });
+    };
+
+    return (
+        <>
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                <h4 className="font-bold text-slate-900 dark:text-white mb-3">Edit Profil</h4>
+                <form onSubmit={updateProfile} className="space-y-3">
+                    <div><label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Nama</label><input type="text" value={profileForm.data.name} onChange={e=>profileForm.setData('name',e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none" required maxLength={255}/></div>
+                    <div><label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Telepon</label><input type="tel" value={profileForm.data.phone} onChange={e=>profileForm.setData('phone',e.target.value.replace(/[^0-9+\-\s]/g,''))} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none" maxLength={20} placeholder="08xxxxxxxxxx"/></div>
+                    <button type="submit" disabled={profileForm.processing} className="px-5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl text-sm shadow-md shadow-emerald-500/20 transition disabled:opacity-50">Simpan</button>
+                </form>
+            </div>
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                <h4 className="font-bold text-slate-900 dark:text-white mb-3">Ganti Kata Sandi</h4>
+                <form onSubmit={updatePassword} className="space-y-3">
+                    <div><label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Kata Sandi Saat Ini</label><input type="password" value={pwForm.data.current_password} onChange={e=>pwForm.setData('current_password',e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none" required/>{pwForm.errors.current_password&&<p className="text-red-400 text-xs mt-1">{pwForm.errors.current_password}</p>}</div>
+                    <div><label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Kata Sandi Baru</label><input type="password" value={pwForm.data.password} onChange={e=>pwForm.setData('password',e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none" required minLength={8}/>{pwForm.errors.password&&<p className="text-red-400 text-xs mt-1">{pwForm.errors.password}</p>}</div>
+                    <div><label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Konfirmasi Kata Sandi</label><input type="password" value={pwForm.data.password_confirmation} onChange={e=>pwForm.setData('password_confirmation',e.target.value)} className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none" required/></div>
+                    <button type="submit" disabled={pwForm.processing} className="px-5 py-2 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white font-bold rounded-xl text-sm transition disabled:opacity-50">Ganti Kata Sandi</button>
+                </form>
+            </div>
+        </>
     );
 }
