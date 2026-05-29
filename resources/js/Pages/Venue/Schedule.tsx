@@ -144,7 +144,7 @@ export default function Schedule({ tenant, courts, bookings, selectedDate, tarif
                                                 {b.status==='pending' && b.created_at && (new Date().getTime() - new Date(b.created_at).getTime()) < 5*60*1000 && (
                                                     <button onClick={()=>cancelBooking(b.id)} className="text-[10px] font-bold text-red-600 hover:underline ml-2">Batalkan</button>
                                                 )}
-                                                {b.status==='approved' && new Date(b.date) >= new Date(new Date().toDateString()) && (
+                                                {b.status==='approved' && !b.rescheduled && (() => { const playTime = new Date(b.date + 'T' + (b.start_time?.slice(0,5)||'00:00')); return (playTime.getTime() - Date.now()) > 5*60*60*1000; })() && (
                                                     <button onClick={()=>openReschedule(b)} className="text-[10px] font-bold text-blue-600 hover:underline ml-2">Reschedule</button>
                                                 )}
                                                 {b.status==='completed' && (
