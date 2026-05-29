@@ -13,6 +13,7 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
     const { data, setData, put, processing } = useForm({
         name: tenant.name,
         address: tenant.address || '',
+        google_maps_url: (tenant as any).google_maps_url || '',
         city: (tenant as any).city || '',
         phone: tenant.phone || '',
         description: tenant.description || '',
@@ -63,7 +64,8 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
                     <h3 className="font-bold text-slate-900 dark:text-white mb-2">Informasi Dasar</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div><Label className="text-[11px] font-bold uppercase text-slate-400">Nama Venue</Label><Input value={data.name} onChange={e=>setData('name',e.target.value)} className="mt-1" required/></div>
-                        <div><Label className="text-[11px] font-bold uppercase text-slate-400">Kota</Label><Input value={data.city} onChange={e=>setData('city',e.target.value)} className="mt-1" required/></div>
+                        <div><Label className="text-[11px] font-bold uppercase text-slate-400">Link Google Maps</Label><input type="url" value={data.google_maps_url} onChange={e=>setData('google_maps_url',e.target.value)} className="mt-1 w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-1 focus:ring-emerald-500 outline-none" placeholder="https://maps.google.com/..." /></div>
+                    <div><Label className="text-[11px] font-bold uppercase text-slate-400">Kota</Label><Input value={data.city} onChange={e=>setData('city',e.target.value)} className="mt-1" required/></div>
                         <div><Label className="text-[11px] font-bold uppercase text-slate-400">Alamat Lengkap</Label><Input value={data.address} onChange={e=>setData('address',e.target.value)} className="mt-1" required/></div>
                         <div><Label className="text-[11px] font-bold uppercase text-slate-400">Telepon</Label><Input value={data.phone} onChange={e=>setData('phone',e.target.value)} className="mt-1" required/></div>
                     </div>

@@ -20,6 +20,7 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
+            'google_maps_url' => 'nullable|url|max:500',
             'city' => 'required|string|max:100',
             'phone' => 'required|string|max:20',
             'description' => 'nullable|string|max:1000',
