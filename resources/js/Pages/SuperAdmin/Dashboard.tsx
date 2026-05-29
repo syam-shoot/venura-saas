@@ -95,7 +95,7 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                     {courtsByType.length > 0 && (
                         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
                             <h3 className="font-bold text-slate-900 dark:text-white mb-3">Lapangan per Kategori</h3>
-                            <div className="flex flex-wrap gap-3">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
                                 {courtsByType.map((c) => (
                                     <div key={c.type} className="flex items-center gap-2 px-3 py-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
                                         <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">{c.type}</span>
