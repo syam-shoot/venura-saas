@@ -38,14 +38,17 @@ class ProfileController extends Controller
     public function uploadPhotos(Request $request, Tenant $tenant)
     {
         $request->validate([
-            'photos.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'photos' => 'required|array',
+            'photos.*' => 'image|mimes:jpg,jpeg,png,webp|max:1024',
         ]);
 
         $existing = $tenant->photos ?? [];
 
         foreach ($request->file('photos', []) as $photo) {
             $path = $photo->store("venues/{$tenant->slug}", 'public');
-            $existing[] = $path;
+            if ($path) {
+                $existing[] = $path;
+            }
         }
 
         $tenant->update(['photos' => $existing]);
