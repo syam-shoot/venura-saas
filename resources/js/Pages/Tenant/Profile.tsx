@@ -158,7 +158,7 @@ export default function Profile({ tenant }: PageProps<{ tenant: Tenant & { descr
                             {tenant.photos.map((photo, i) => (
                                 <div key={i} className="relative group rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
                                     <img src={`/storage/${photo}`} alt="" className="w-full h-32 object-cover"/>
-                                    <button onClick={() => deletePhoto(photo)} className="absolute top-2 right-2 w-7 h-7 bg-red-500 text-white rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                                    <button onClick={() => deletePhoto(photo)} className="absolute top-2 right-2 w-7 h-7 bg-red-500 hover:bg-red-600 text-white rounded-lg flex items-center justify-center shadow-sm transition">
                                         <Trash2 className="h-3.5 w-3.5"/>
                                     </button>
                                 </div>
