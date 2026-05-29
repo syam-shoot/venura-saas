@@ -19,10 +19,10 @@ interface Stats {
 
 function StatCard({ icon: Icon, label, value, color }: { icon: any; label: string; value: string | number; color: string }) {
     return (
-        <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
             <Icon className={`h-5 w-5 ${color} mb-2`} />
             <p className="text-[11px] font-bold text-slate-400 uppercase">{label}</p>
-            <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{value}</p>
+            <p className="text-lg sm:text-2xl font-extrabold text-slate-900 dark:text-white truncate">{value}</p>
         </div>
     );
 }
