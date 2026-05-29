@@ -125,7 +125,7 @@ export default function Dashboard({ stats, tenants, courtsByType }: PageProps<{ 
                                     <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                                         <td className="p-3">
                                             <p className="font-semibold text-slate-900 dark:text-white">{t.name}</p>
-                                            <p className="text-[11px] text-slate-400">{t.slug} • {t.email}</p>
+                                            <p className="text-[11px] text-slate-400">{t.email}</p>
                                         </td>
                                         <td className="p-3 text-slate-600 dark:text-slate-400">{(t as any).city || '-'}</td>
                                         <td className="p-3 text-slate-700 dark:text-slate-300">{t.bookings_count}</td>
